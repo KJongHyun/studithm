@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Studithm</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+        .container {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <a class="navbar-brand" href="/" th:href="@{/}">
+            <img src="/images/logo_sm.png" width="30" height="30">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collagpse" data-target="#navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <form th:action="@{/search/study}" class="form-inline" method="get">
+                        <input class="form-control mr-sm-2" name="keyword" type="search" placeholder="스터디 찾기">
+                    </form>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/login}">로그인</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/sign-up}">가입</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="py-5 text-center" th:if="${error}">
+        <p class="lead">스터디올래 이메일 확인</p>
+        <div class="alert alert-danger" role="alert">
+            이메일 확인 링크가 정확하지 않습니다.
+        </div>
+    </div>
+    <div class="py-5 text-center" th:if="${error == null}">
+        <p class="lead">스터디올래 이메일 확인</p>
+        <h1>
+            이메일을 확인했습니다. <span th:text="${numberOfUser}">10</span>번째 회원,
+            <span th:text="${nickname}">김종현</span>님 가입을 축하합니다.
+        </h1>
+        <small class="text-info">이제부터 가입할 때 사용한 이메일 또는 닉네임과 패스워드로 로그인 할 수 있습니다.</small>
+    </div>
+</body>
+</html>
