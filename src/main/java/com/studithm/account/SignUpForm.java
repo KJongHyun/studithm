@@ -1,6 +1,7 @@
 package com.studithm.account;
 
 import lombok.Data;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
