@@ -60,7 +60,7 @@
                     <h6 class="dropdown-header">
                         <span sec:authentication="name">Username</span>
                     </h6>
-                    <a class="dropdown-item" href="#" th:href="@{'/profile' + ${#authentication.name}}">프로필</a>
+                    <a class="dropdown-item" href="#" th:href="@{'/profile/' + ${#authentication.name}}">프로필</a>
                     <a class="dropdown-item" href="#">스터디</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#" th:href="@{'/settings/profile'=}">설정</a>
@@ -79,6 +79,15 @@
         <small class="d-block mb-3 text-muted">Copyright 2020</small>
     </div>
 </footer>
+
+<div th:fragment="settings-menu (currentMenu)" class="list-group">
+    <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'profile'}? active" th:href="@{/settings/}">프로필</a>
+    <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'password'}? active" th:href="@{/settings/password}">패스워드</a>
+    <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'notifications'}? active" th:href="@{/settings/notifications}">알림</a>
+    <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'tags'}? active" th:href="@{/settings/tags}">관심 주제</a>
+    <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'zones'}? active" th:href="@{/settings/zones}">활동 지역</a>
+    <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'account'}? active" th:href="@{/settings/account}">계</a>
+</div>
 
 <script type="application/javascript" th:fragment="form-validation">
     (function () {
