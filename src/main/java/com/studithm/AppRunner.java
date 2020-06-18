@@ -21,10 +21,8 @@ public class AppRunner implements ApplicationRunner {
         signUpForm.setEmail("whdgus8219@naver.com");
         signUpForm.setNickname("jonghyeon");
         signUpForm.setPassword("12345678");
-
+        accountService.processNewAccount(signUpForm);
         System.out.println(signUpForm.toString());
         System.out.println("======================= jonghyeon 계정 초기화 완료 =======================");
-
-        accountService.processNewAccount(signUpForm);
     }
 }

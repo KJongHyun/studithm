@@ -37,7 +37,6 @@ public class SettingsController {
             model.addAttribute(account);
             return SETTINGS_PROFILE_VIEW_NAME;
         }
-        System.out.println("view return 테스트");
 
         accountService.updateProfile(account, profile);
         model.addAttribute(account);
