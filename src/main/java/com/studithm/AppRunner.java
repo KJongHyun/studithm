@@ -18,8 +18,8 @@ public class AppRunner implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         System.out.println("======================= jonghyeon 계정 초기화 =======================");
         SignUpForm signUpForm = new SignUpForm();
-        signUpForm.setEmail("whdgus8219@naver.com");
-        signUpForm.setNickname("jonghyeon");
+        signUpForm.setEmail("test@naver.com");
+        signUpForm.setNickname("test");
         signUpForm.setPassword("12345678");
         accountService.processNewAccount(signUpForm);
         System.out.println(signUpForm.toString());

@@ -124,6 +124,63 @@
         $cutBtn.hide();
         $resetBtn.hide();
         $confirmBtn.hide();
+
+        $("#profile-image-file").change(function(e) {
+            if (e.target.files.length === 1) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    if (e.target.result) {
+                        let img = document.createElement("img");
+                        img.id = 'new-profile';
+                        img.src = e.target.result;
+                        img.width = 250;
+
+                        $newProfileImage.html(img);
+                        $newProfileImage.show();
+                        $currentProfileImage.hide();
+
+                        let $newImage = $(img);
+                        $newImage.cropper({aspectRatio:1});
+                        cropper = $newImage.data('cropper');
+
+                        $cutBtn.show();
+                        $confirmBtn.hide();
+                        $resetBtn.show();
+                    }
+
+                };
+
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        $resetBtn.click(function() {
+           $currentProfileImage.show();
+           $newProfileImage.hide();
+           $resultImage.hide();
+           $resetBtn.hide();
+           $cutBtn.hide();
+           $confirmBtn.hide();
+           $profileImage.val('');
+        });
+
+        $cutBtn.click(function () {
+           let dataUrl = cropper.getCroppedCanvas().toDataURL();
+           let newImage = document.createElement("img");
+           newImage.id = "cropped-new-profile-imge";
+           newImage.src = dataUrl;
+           newImage.width = 125;
+           $resultImage.html(newImage);
+           $resultImage.show();
+           $confirmBtn.show();
+
+           $confirmBtn.click(function() {
+              $newProfileImage.html(newImage);
+              $cutBtn.hide();
+              $confirmBtn.hide();
+              $profileImage.val(dataUrl);
+           });
+        });
     });
 </script>
 </body>
