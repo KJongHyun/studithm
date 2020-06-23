@@ -1,5 +1,6 @@
-package com.studithm.settings;
+package com.studithm.settings.validator;
 
+import com.studithm.settings.form.PasswordForm;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 

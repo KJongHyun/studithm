@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Table(name="persistent_logins")
 @Entity
 @Getter @Setter
-public class   PersistentLogins {
+public class PersistentLogins {
     @Id
     @Column(length = 64)
     private String series;
