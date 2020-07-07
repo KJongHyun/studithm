@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -43,15 +45,18 @@ public class Account {
 
     private boolean studyCreatedByEmail;
 
-    private boolean studyCreatedByWeb;
+    private boolean studyCreatedByWeb = true;
 
     private boolean studyEnrollmentResultByEmail;
 
-    private boolean studyEnrollmentResultByWeb;
+    private boolean studyEnrollmentResultByWeb = true;
 
     private boolean studyUpdatedByEmail;
 
-    private boolean studyUpdatedByWeb;
+    private boolean studyUpdatedByWeb = true;
+
+    @ManyToMany
+    private List<Tag> tags = new ArrayList<>();
 
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();
