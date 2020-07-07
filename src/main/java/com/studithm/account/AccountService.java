@@ -138,4 +138,15 @@ public class AccountService implements UserDetailsService {
 
         // getOne() 같은 경우는 Lazy 로딩임
     }
+
+    public List<Tag> getTags(Account account) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        return byId.orElseThrow().getTags();
+    }
+
+    public void removeTag(Account account, Tag tag) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getTags().remove(tag));
+
+    }
 }

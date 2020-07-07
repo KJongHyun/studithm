@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -117,6 +120,9 @@ public class SettingsController {
     @GetMapping(SETTINGS_TAGS_URL)
     public String updateTagsForm(@CurrentUser Account account, Model model) {
         model.addAttribute(account);
+        List<Tag> tags = accountService.getTags(account);
+        model.addAttribute("tags", tags.stream().map(Tag::getTitle).collect(Collectors.toList()));
+
         return SETTINGS_TAGS_VIEW_NAME;
     }
 
@@ -124,11 +130,27 @@ public class SettingsController {
     @ResponseBody
     public ResponseEntity addTag(@CurrentUser Account account, @RequestBody TagForm tagForm) {
         String title = tagForm.getTagTitle();
-        Tag tag = tagRepository.findByTitle(title).orElseGet(() -> tagRepository.save(Tag.builder()
-        .title(tagForm.getTagTitle())
-        .build()));
+        Tag tag = tagRepository.findByTitle(title);
+        if (tag == null) {
+            tag = tagRepository.save(Tag.builder()
+                    .title(title)
+                    .build());
+        }
 
         accountService.addTag(account, tag);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(SETTINGS_TAGS_URL + "/remove")
+    @ResponseBody
+    public ResponseEntity removeTag(@CurrentUser Account account, @RequestBody TagForm tagForm) {
+        String title = tagForm.getTagTitle();
+        Tag tag = tagRepository.findByTitle(title);
+        if (tag == null)
+            return ResponseEntity.badRequest().build();
+
+        accountService.removeTag(account, tag);
 
         return ResponseEntity.ok().build();
     }
