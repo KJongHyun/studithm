@@ -3,21 +3,19 @@ package com.studithm.settings;
 import com.studithm.account.AccountService;
 import com.studithm.account.CurrentUser;
 import com.studithm.domain.Account;
-import com.studithm.settings.form.NicknameForm;
-import com.studithm.settings.form.Notifications;
-import com.studithm.settings.form.PasswordForm;
-import com.studithm.settings.form.Profile;
+import com.studithm.domain.Tag;
+import com.studithm.settings.form.*;
 import com.studithm.settings.validator.NicknameValidator;
 import com.studithm.settings.validator.PasswordFormValidator;
+import com.studithm.tag.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -44,11 +42,14 @@ public class SettingsController {
     static final String SETTINGS_NOTIFICATIONS_URL = "/" + SETTINGS_NOTIFICATIONS_VIEW_NAME;
     static final String SETTINGS_ACCOUNT_VIEW_NAME = "settings/account";
     static final String SETTINGS_ACCOUNT_URL = "/" + SETTINGS_ACCOUNT_VIEW_NAME;
+    static final String SETTINGS_TAGS_VIEW_NAME = "settings/tags";
+    static final String SETTINGS_TAGS_URL = "/" + SETTINGS_TAGS_VIEW_NAME;
 
 
     private final AccountService accountService;
     private final ModelMapper modelMapper;
     private final NicknameValidator nicknameValidator;
+    private final TagRepository tagRepository;
 
     @GetMapping(SETTINGS_PROFILE_URL)
     public String updateProfileForm(@CurrentUser Account account, Model model) {
@@ -111,6 +112,25 @@ public class SettingsController {
         accountService.updateNotifications(account, notifications);
         attributes.addFlashAttribute("message", "알림 설정을 변경하였습니다.");
         return "redirect:" + SETTINGS_NOTIFICATIONS_URL;
+    }
+
+    @GetMapping(SETTINGS_TAGS_URL)
+    public String updateTagsForm(@CurrentUser Account account, Model model) {
+        model.addAttribute(account);
+        return SETTINGS_TAGS_VIEW_NAME;
+    }
+
+    @PostMapping(SETTINGS_TAGS_URL + "/add")
+    @ResponseBody
+    public ResponseEntity addTag(@CurrentUser Account account, @RequestBody TagForm tagForm) {
+        String title = tagForm.getTagTitle();
+        Tag tag = tagRepository.findByTitle(title).orElseGet(() -> tagRepository.save(Tag.builder()
+        .title(tagForm.getTagTitle())
+        .build()));
+
+        accountService.addTag(account, tag);
+
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping(SETTINGS_ACCOUNT_URL)
