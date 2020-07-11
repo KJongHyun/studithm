@@ -2,6 +2,7 @@ package com.studithm.account;
 
 import com.studithm.domain.Account;
 import com.studithm.domain.Tag;
+import com.studithm.domain.Zone;
 import com.studithm.settings.form.Notifications;
 import com.studithm.settings.form.Profile;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -148,5 +150,20 @@ public class AccountService implements UserDetailsService {
         Optional<Account> byId = accountRepository.findById(account.getId());
         byId.ifPresent(a -> a.getTags().remove(tag));
 
+    }
+
+    public void addZone(Account account, Zone zone) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getZones().add(zone));
+    }
+
+    public Set<Zone> getZones(Account account) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        return byId.orElseThrow().getZones();
+    }
+
+    public void removeZone(Account account, Zone zone) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getZones().remove(zone));
     }
 }

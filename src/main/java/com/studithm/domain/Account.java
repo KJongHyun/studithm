@@ -4,9 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Getter @Setter @EqualsAndHashCode(of = "id")
@@ -57,6 +55,10 @@ public class Account {
 
     @ManyToMany
     private List<Tag> tags = new ArrayList<>();
+
+    @ManyToMany
+    @Builder.Default
+    private Set<Zone> zones = new HashSet<>();
 
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();
