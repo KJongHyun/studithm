@@ -17,10 +17,12 @@ import java.time.LocalDateTime;
 public class AppRunner implements ApplicationRunner {
 
     private final AccountService accountService;
-    private final AccountRepository repository;
+    private final AccountRepository accountRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        if (accountRepository.existsByNickname("test"))
+            return;
         System.out.println("======================= jonghyeon 계정 초기화 =======================");
         SignUpForm signUpForm = new SignUpForm();
         signUpForm.setEmail("test@naver.com");
@@ -28,7 +30,7 @@ public class AppRunner implements ApplicationRunner {
         signUpForm.setPassword("12345678");
         Account account = accountService.processNewAccount(signUpForm);
         account.setEmailCheckTokenGeneratedAt(LocalDateTime.now().minusHours(1));
-        repository.save(account);
+        accountRepository.save(account);
         System.out.println(signUpForm.toString());
         System.out.println("======================= jonghyeon 계정 초기화 완료 =======================");
     }
