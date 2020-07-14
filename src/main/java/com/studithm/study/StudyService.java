@@ -46,4 +46,8 @@ public class StudyService {
     public void updateStudyDescription(Study study, StudyDescriptionForm studyDescriptionForm) {
         modelMapper.map(studyDescriptionForm, study);
     }
+
+    public void updateImage(Study study, String image) {
+        study.setImage(image);
+    }
 }

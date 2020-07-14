@@ -56,6 +56,25 @@ public class StudySettingsController {
         return "redirect:/study/" + getPath(path) + "/settings/description";
     }
 
+    @GetMapping("/banner")
+    public String viewStudyBannerSetting(@CurrentUser Account account, @PathVariable String path,
+                                         Model model) {
+        Study study = studyService.getStudyToUpdate(account, path);
+        model.addAttribute(account);
+        model.addAttribute(study);
+        return "study/settings/banner";
+    }
+
+    @PostMapping("/banner")
+    public String updateStudyBanner(@CurrentUser Account account, @PathVariable String path,
+                                  String image, Errors errors,
+                                  Model model, RedirectAttributes attributes) {
+        Study study = studyService.getStudyToUpdate(account, path);
+        studyService.updateImage(study, image);
+        attributes.addFlashAttribute("message", "스터디 이미지를 수정했습니다.");
+        return "redirect:/study/" + getPath(path) + "/settings/banner";
+    }
+
     private String getPath(String path) {
         return URLEncoder.encode(path, StandardCharsets.UTF_8);
     }

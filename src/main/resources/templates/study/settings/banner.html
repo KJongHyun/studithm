@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html::head"></head>
+<body>
+    <div th:replace="fragments.html::main-nav"></div>
+    <div th:replace="fragments.html::study-banner"></div>
+    <div class="container">
+        <div th:replace="fragments.html::study-info"></div>
+        <div th:replace="fragments.html::study-menu(studyMenu='settings')"></div>
+        <div class="row mt-3 justify-content-center">
+            <div class="col-2">
+                <div th:replace="fragments.html::study-settings-menu(currentMenu='banner')"></div>
+            </div>
+            <div class="col-8">
+                <div th:replace="fragments.html :: message"></div>
+                <div class="row">
+                    <h2 class="col-sm-12">배너 이미지 사용</h2>
+                </div>
+                <form th:if="${!study.useBanner}" th:action="@{'/study' + ${study.getPath()} + '/settings/banner/enable'}" method="post">
+                    <div class="alert alert-primary" role="alert">
+                        스터디 메뉴에서 스터디 배너 이미지를 사용합니다. 스터디 배너 이미지를 아직 설정하지 않았다면, 기본 배너 이미지를 사용합니다.
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-outline-primary btn-block" type="submit" aria-describedby="submitHelp">배너 이미지 사용하지 않기</button>
+                    </div>
+                </form>
+                <form th:if="${study.useBanner}" th:action="@{'/study' + ${study.getPath()} + '/settings/banner/disable'}" method="post">
+                    <div class="alert alert-primary" role="alert">
+                        스터디 메뉴에서 스터디 배너 이미지를 사용하지 않습니다. 스터디 목록에서는 배너 이미지를 사용합니다.
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-outline-primary btn-block" type="submit" aria-describedby="submitHelp">배너 이미지 사용하지 않기</button>
+                    </div>
+                </form>
+                <hr/>
+                <div class="row">
+                    <h2 class="col-sm-12">배너 이미지 변경</h2>
+                </div>
+                <form id="imageForm" th:action="@{'/study/' + ${study.getPath()} + '/settings/banner'}" method="post" novalidate>
+                    <div class="form-group">
+                        <input id="studyImage" type="hidden" name="image" class="form-control" />
+                    </div>
+                </form>
+                <div class="card text-center">
+                    <div id="current-study-image" class="mt-3">
+                        <img class="rounded" th:src="${study.image}" width="640" alt="name" th:alt="${study.title}"/>
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="profile-image-file">
+                        <label class="custom-file-label" for="profile-image-file">스터디 이미지 변경</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html::footer"></div>
+    </div>
+    <script th:replace="fragments.html :: form-validation"></script>
+    <script th:replace="fragments.html :: editor-script"></script>
+</body>
+</html>

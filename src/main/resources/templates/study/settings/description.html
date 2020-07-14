@@ -2,191 +2,62 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments.html::head"></head>
 <body>
-<div th:replace="fragments.html::main-nav"></div>
-<div th:replace="fragments.html::study-banner"></div>
-<div class="container">
-    <div th:replace="fragments.html::study-info"></div>
-    <div th:replace="fragments.html::study-menu(studyMenu='settings')"></div>
-    <div class="row mt-5 justify-content-center">
-        <div class="col-2">
-            <div th:replace="fragments.html::settings-menu(currentMenu='profile')"></div>
-        </div>
-        <div class="col-8">
-            <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-3" role="alert">
-                <span th:text="${message}">메시지</span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">x</span>
-                </button>
+    <div th:replace="fragments.html::main-nav"></div>
+    <div th:replace="fragments.html::study-banner"></div>
+    <div class="container">
+        <div th:replace="fragments.html::study-info"></div>
+        <div th:replace="fragments.html::study-menu(studyMenu='settings')"></div>
+        <div class="row mt-5 justify-content-center">
+            <div class="col-2">
+                <div th:replace="fragments.html::study-settings-menu(currentMenu='description', path=${study.path})"></div>
             </div>
-
-            <div class="row">
-                <h2 class="col-sm-12" th:text="${account.nickname}">jonghyeon</h2>
-            </div>
-            <div class="row mt-3">
-                <form action="#" class="col-sm-6"
-                      th:action="@{/settings/profile}" th:object="${profile}" method="post" novalidate>
+            <div class="col-8">
+                <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-3" role="alert">
+                    <span th:text="${message}">메시지</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <form class="needs-validation" th:action="@{'/study/' + ${study.getPath()} + '/settings/description'}"
+                      th:object="${studyDescriptionForm}" method="post" novalidate>
                     <div class="form-group">
-                        <label for="bio">한 줄 소개</label>
-                        <input type="text" id="bio" th:field="*{bio}" class="form-control"
-                               placeholder="간략한 소개를 부탁합니다." aria-describedby="bioHelp" required>
-                        <small id="bioHelp" class="form-text text-muted">
-                            길지 않게 35자 이내로 입력하세요.
+                        <label for="shortDescription">짧은 소개</label>
+                        <textarea id="shortDescription" type="textarea" th:field="*{shortDescription}" class="form-control"
+                               placeholder="스터디를 짧게 소개해 주세요." aria-describedby="shortDescriptionHelp" required maxlength="100">
+                        </textarea>
+                        <small id="shortDescriptionHelp" class="form-text text-muted">
+                            100자 이내로 스터디를 짧은 소개해 주세요.
                         </small>
-                        <small class="form-text text-danger" th:if="${#fields.hasErrors('bio')}" th:errors="*{bio}">
+                        <small class="invalid-feedback">짧은 소개를 입력하세요.</small>
+                        <small class="form-text text-danger" th:if="${#fields.hasErrors('shortDescription')}" th:errors="*{shortDescription}">
                             조금 길어요.
                         </small>
                     </div>
 
                     <div class="form-group">
-                        <label for="url">링크</label>
-                        <input type="url" id="url" th:field="*{url}" class="form-control"
-                               placeholder="http://studithm.com" aria-describedby="urlHelp" required>
-                        <small id="urlHelp" class="form-text text-muted">
-                            블로그, 유튜브 또는 포트폴리오나 좋아하는 웹 사이트 등 본인을 표현할 수 있는 링크를 추가하세요.
+                        <label for="fullDescription">상세 소개</label>
+                        <textarea id="fullDescription" type="textarea" th:field="*{fullDescription}" class="form-control"
+                               placeholder="스터디를 자세히 설명해 주세요." aria-describedby="fullDescriptionHelp" required>
+                        </textarea>
+                        <small id="fullDescriptionHelp" class="form-text text-muted">
+                            스터디의 목표, 일정, 진행 방식, 사용할 교재 또는 인터넷 강좌 그리고 모집중인 스터디원 등 스터디에 대해 자세히 적어 주세요.
                         </small>
-                        <small class="form-text text-danger" th:if="${#fields.hasErrors('url')}" th:errors="*{url}">
+                        <small class="invalid-feedback">상세 소개를 입력하세요.</small>
+                        <small class="form-text text-danger" th:if="${#fields.hasErrors('fullDescription')}" th:errors="*{fullDescription}">
                             올바른 URL이 아닙니다. 예시처럼 입력해 주세요.
                         </small>
                     </div>
-
-                    <div class="form-group">
-                        <label for="company">직업</label>
-                        <input id="company" type="text" th:field="*{occupation}" class="form-control"
-                               placeholder="어떤 일을 하고 계신가요?" aria-describedby="occupationHelp" required>
-                        <small id="companyHelp" class="form-text text-muted">
-                            개발자? 매니저? 취준생? 대표님?
-                        </small>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="location">활동 지역</label>
-                        <input id="location" type="text" th:field="*{location}" class="form-control"
-                               placeholder="Redmond, WA, USA"
-                               aria-describedby="locationHelp" required>
-                        <small id="locationHelp" class="form-text text-muted">
-                            주요 활동(사는 곳이나 직장을 다니는 곳 또는 놀러 다니는 곳) 지역의 도시 이름을 알려주세요.
-                        </small>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="hidden" id="profileImage" class="form-control" th:field="*{profileImage}"/>
-                    </div>
-
                     <div class="form-group">
                         <button class="btn btn-primary btn-block" type="submit"
                                 aria-describedby="submitHelp">수정하기
                         </button>
                     </div>
                 </form>
-                <div class="col-sm-6">
-                    <div class="card text-center">
-                        <div class="card-header">
-                            프로필 이미지
-                        </div>
-                        <div id="current-profile-image" class="mt-3">
-                            <svg th:if="${#strings.isEmpty(profile.profileImage)}" class="rounded"
-                                 th:data-jdenticon-value="${account.nickname}" width="125" height="125"></svg>
-                            <img th:if="${!#strings.isEmpty(profile.profileImage)}" class="rounded"
-                                 th:src="${profile.profileImage}"
-                                 width="125" height="125" alt="name" th:alt="${account.nickname}"/>
-                        </div>
-
-                        <div id="new-profile-image" class="mt-3"></div>
-                        <div class="card-body">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="profile-image-file">
-                                <label class="custom-file-label" for="profile-image-file">프로필 이미지 변경</label>
-                            </div>
-                            <div id="new-profile-image-control" class="mt-3">
-                                <div class="btn btn-outline-primary btn-lock" id="cut-button">자르기</div>
-                                <div class="btn btn-outline-success btn-lock" id="confirm-button">확인</div>
-                                <div class="btn btn-outline-warning btn-lock" id="reset-button">취소</div>
-                            </div>
-                            <div id="cropped-new-profile-image" class="mt-3"></div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
+        <div th:replace="fragments.html::footer"></div>
     </div>
-</div>
-<div th:replace="fragments.html::footer"></div>
-<link href="/node_modules/cropper/dist/cropper.min.css" rel="stylesheet">
-<script src="/node_modules/cropper/dist/cropper.min.js"></script>
-<script src="/node_modules/jquery-cropper/dist/jquery-cropper.min.js"></script>
-<script type="application/javascript">
-    $(function () {
-        cropper = '';
-        let $confirmBtn = $('#confirm-button');
-        let $resetBtn = $('#reset-button');
-        let $cutBtn = $('#cut-button');
-        let $newProfileImage = $('#new-profile-image');
-        let $currentProfileImage = $('#current-profile-image');
-        let $resultImage = $('#cropped-new-profile-image');
-        let $profileImage = $('#profileImage');
-
-        $newProfileImage.hide();
-        $cutBtn.hide();
-        $resetBtn.hide();
-        $confirmBtn.hide();
-
-        $("#profile-image-file").change(function (e) {
-            if (e.target.files.length === 1) {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    if (e.target.result) {
-                        let img = document.createElement("img");
-                        img.id = 'new-profile';
-                        img.src = e.target.result;
-                        img.width = 250;
-
-                        $newProfileImage.html(img);
-                        $newProfileImage.show();
-                        $currentProfileImage.hide();
-
-                        let $newImage = $(img);
-                        $newImage.cropper({aspectRatio: 1});
-                        cropper = $newImage.data('cropper');
-
-                        $cutBtn.show();
-                        $confirmBtn.hide();
-                        $resetBtn.show();
-                    }
-
-                };
-
-                reader.readAsDataURL(e.target.files[0]);
-            }
-        });
-
-        $resetBtn.click(function () {
-            $currentProfileImage.show();
-            $newProfileImage.hide();
-            $resultImage.hide();
-            $resetBtn.hide();
-            $cutBtn.hide();
-            $confirmBtn.hide();
-            $profileImage.val('');
-        });
-
-        $cutBtn.click(function () {
-            let dataUrl = cropper.getCroppedCanvas().toDataURL();
-            let newImage = document.createElement("img");
-            newImage.id = "cropped-new-profile-imge";
-            newImage.src = dataUrl;
-            newImage.width = 125;
-            $resultImage.html(newImage);
-            $resultImage.show();
-            $confirmBtn.show();
-
-            $confirmBtn.click(function () {
-                $newProfileImage.html(newImage);
-                $cutBtn.hide();
-                $confirmBtn.hide();
-                $profileImage.val(dataUrl);
-            });
-        });
-    });
-</script>
+    <script th:replace="fragments.html :: form-validation"></script>
+    <script th:replace="fragments.html :: editor-script"></script>
 </body>
 </html>
