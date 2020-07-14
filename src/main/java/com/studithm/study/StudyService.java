@@ -50,4 +50,12 @@ public class StudyService {
     public void updateImage(Study study, String image) {
         study.setImage(image);
     }
+
+    public void enableStudyBanner(Study study) {
+        study.setUseBanner(true);
+    }
+
+    public void disableStudyBanner(Study study) {
+        study.setUseBanner(false);
+    }
 }
