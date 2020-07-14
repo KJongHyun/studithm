@@ -250,4 +250,12 @@
     </ul>
 </div>
 
+<div th:fragment="study-settings-menu (currentMenu, path)" class="list-group">
+    <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'profile'}? active" th:href="@{/settings/profile}">소개</a>
+    <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'password'}? active" th:href="@{/settings/password}">배너 이미지</a>
+    <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'notifications'}? active" th:href="@{/settings/notifications}">스터디 주제</a>
+    <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'tags'}? active" th:href="@{/settings/tags}">활동 지역</a>
+    <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'zones'}? active" th:href="@{/settings/zones}">스터디</a>>
+</div>
+
 </html>

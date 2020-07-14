@@ -25,6 +25,7 @@ public class ZoneService {
     public void initZoneData() throws IOException {
         if (zoneRepository.count() == 0) {
             Resource resource = new ClassPathResource("zones_kr.csv");
+
             List<Zone> zones = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8).stream()
                     .map(zone -> {
                         String[] split = zone.split(",");
