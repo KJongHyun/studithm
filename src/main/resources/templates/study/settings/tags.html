@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html::head"></head>
+<body>
+    <div th:replace="fragments.html::main-nav"></div>
+    <div th:replace="fragments.html::study-banner"></div>
+    <div class="container">
+        <div th:replace="fragments.html::study-info"></div>
+        <div th:replace="fragments.html::study-menu(studyMenu='settings')"></div>
+        <div class="row mt-5 justify-content-center">
+            <div class="col-2">
+                <div th:replace="fragments.html::study-settings-menu(currentMenu='tags')"></div>
+            </div>
+            <div class="col-8">
+                <div class="row">
+                    <h2 class="col-12"> 스터디 주제</h2>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-info" role="alert">
+                            스터디에서 주로 다루는 주제를 태그로 등록하세요. 태그를 입력하고 콤마(,) 또는 엔터를 입력하세요.
+                        </div>
+                        <div id="whitelist" th:text="${whitelist}" hidden></div>
+                        <input type="text" id="tags" name="tags" th:value="${#strings.listJoin(tags, ',')}"
+                               class="tagify-outside" aria-describedby="tagHelp">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html::footer"></div>
+    </div>
+    <script th:replace="fragments.html :: ajax-csrf-header"></script>
+    <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
+    <script type="application/javascript">
+        $(function() {
+            function tagRequest(url, tagTitle) {
+                var requestUrl = "/study/[(${study.getPath()})]/settings/tags" + url;
+                $.ajax({
+                    dataType : "json",
+                    autocomplete: {
+                        enabled: true,
+                        rightKey: true,
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    method: "POST",
+                    url: requestUrl,
+                    data: JSON.stringify({'tagTitle': tagTitle})
+                }).done(function (data, status) {
+                    console.log("${data} and status is ${status}");
+                });
+            }
+
+            function onAdd(e) {
+                tagRequest("/add", e.detail.data.value);
+            }
+
+            function onRemove(e) {
+                tagRequest("/remove", e.detail.data.value);
+            }
+
+            var tagInput = document.querySelector("#tags");
+
+            var tagify = new Tagify(tagInput, {
+                pattern: /^.{0,20}$/,
+                whitelist: JSON.parse(document.querySelector("#whitelist").textContent),
+                dropdown: {
+                    enabled: 1,
+                }
+            });
+
+            tagify.on("add", onAdd);
+            tagify.on("remove", onRemove);
+
+            tagify.DOM.input.classList.add('form-control');
+            tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
+        });
+
+    </script>
+</body>
+</html>

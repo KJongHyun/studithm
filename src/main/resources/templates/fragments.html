@@ -253,9 +253,9 @@
 <div th:fragment="study-settings-menu (currentMenu)" class="list-group">
     <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'description'}? active" th:href="@{'/study/' + ${study.path} + '/settings/description'}">소개</a>
     <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'banner'}? active" th:href="@{'/study/' + ${study.path} + '/settings/banner'}">배너 이미지</a>
-    <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'notifications'}? active" th:href="@{/settings/notifications}">스터디 주제</a>
-    <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'tags'}? active" th:href="@{/settings/tags}">활동 지역</a>
-    <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'zones'}? active" th:href="@{/settings/zones}">스터디</a>
+    <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'tags'}? active" th:href="@{'/study/' + ${study.path} + '/settings/tags'}">스터디 주제</a>
+    <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'zones'}? active" th:href="@{'/study/' + ${study.path} + '/settings/zones'}">활동 지역</a>
+    <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'zoness'}? active" th:href="@{/settings/zones}">스터디</a>
 </div>
 <div th:fragment="editor-script">
     <script src="/node_modules/summernote/dist/summernote-bs4.js"></script>

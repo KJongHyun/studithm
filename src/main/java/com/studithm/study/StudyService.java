@@ -2,6 +2,8 @@ package com.studithm.study;
 
 import com.studithm.domain.Account;
 import com.studithm.domain.Study;
+import com.studithm.domain.Tag;
+import com.studithm.domain.Zone;
 import com.studithm.study.form.StudyDescriptionForm;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -57,5 +59,21 @@ public class StudyService {
 
     public void disableStudyBanner(Study study) {
         study.setUseBanner(false);
+    }
+
+    public void addTag(Study study, Tag tag) {
+        study.getTags().add(tag);
+    }
+
+    public void removeTag(Study study, Tag tag) {
+        study.getTags().remove(tag);
+    }
+
+    public void addZone(Study study, Zone zone) {
+        study.getZones().add(zone);
+    }
+
+    public void removeZone(Study study, Zone zone) {
+        study.getZones().remove(zone);
     }
 }
