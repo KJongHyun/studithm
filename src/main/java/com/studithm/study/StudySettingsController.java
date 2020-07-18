@@ -12,6 +12,7 @@ import com.studithm.settings.form.ZoneForm;
 import com.studithm.study.form.StudyDescriptionForm;
 import com.studithm.study.form.StudyForm;
 import com.studithm.tag.TagRepository;
+import com.studithm.tag.TagService;
 import com.studithm.zone.ZoneRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -36,6 +37,7 @@ import java.util.stream.Collectors;
 public class StudySettingsController {
 
     private final StudyService studyService;
+    private final TagService tagService;
     private final TagRepository tagRepository;
     private final ZoneRepository zoneRepository;
     private final ModelMapper modelMapper;
@@ -123,12 +125,7 @@ public class StudySettingsController {
     public ResponseEntity addTag(@CurrentUser Account account, @PathVariable String path, @RequestBody TagForm tagForm) {
         Study study = studyService.getStudyToUpdate(account, path);
         String title = tagForm.getTagTitle();
-        Tag tag = tagRepository.findByTitle(title);
-        if (tag == null) {
-            tag = tagRepository.save(Tag.builder()
-                    .title(title)
-                    .build());
-        }
+        Tag tag = tagService.findOrCreateNew(title);
         studyService.addTag(study, tag);
 
         return ResponseEntity.ok().build();
