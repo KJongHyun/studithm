@@ -151,8 +151,7 @@ public class StudySettingsController {
         Study study = studyService.getStudyToUpdate(account, path);
         model.addAttribute(account);
         model.addAttribute(study);
-        List<String> zones = study.getZones().stream().map(Zone::toString).collect(Collectors.toList());
-        model.addAttribute(zones);
+        model.addAttribute("zones", study.getZones().stream().map(Zone::toString).collect(Collectors.toList()));
         List<String> allZones = zoneRepository.findAll().stream().map(Zone::toString).collect(Collectors.toList());
         model.addAttribute("whitelist", objectMapper.writeValueAsString(allZones));
 
@@ -166,7 +165,7 @@ public class StudySettingsController {
         if (zone == null) {
             return ResponseEntity.badRequest().build();
         }
-        Study study = studyService.getStudyToUpdate(account, path);
+        Study study = studyService.getStudyToUpdateZone(account, path);
         studyService.addZone(study, zone);
         return ResponseEntity.ok().build();
     }
@@ -178,7 +177,7 @@ public class StudySettingsController {
         if (zone == null) {
             return ResponseEntity.badRequest().build();
         }
-        Study study = studyService.getStudyToUpdate(account, path);
+        Study study = studyService.getStudyToUpdateTag(account, path);
         studyService.removeZone(study, zone);
         return ResponseEntity.ok().build();
     }

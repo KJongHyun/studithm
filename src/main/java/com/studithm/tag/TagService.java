@@ -15,7 +15,7 @@ public class TagService {
     public Tag findOrCreateNew(String title) {
         Tag tag = tagRepository.findByTitle(title);
         if (tag == null) {
-            tagRepository.save(Tag.builder().title(title).build());
+            tag = tagRepository.save(Tag.builder().title(title).build());
         }
 
         return tag;

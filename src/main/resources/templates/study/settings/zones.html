@@ -13,7 +13,7 @@
             </div>
             <div class="col-8">
                 <div class="row">
-                    <h2 class="col-12"> 스터디 주제</h2>
+                    <h2 class="col-12"> 주요 활동 지역</h2>
                 </div>
                 <div class="row">
                     <div class="col-12">
@@ -32,50 +32,6 @@
         <div th:replace="fragments.html::footer"></div>
     </div>
     <script th:replace="fragments.html :: ajax-csrf-header"></script>
-    <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
-    <script type="application/javascript">
-        $(function() {
-            function tagRequest(url, zoneName) {
-                $.ajax({
-                    dataType : "json",
-                    autocomplete: {
-                        enabled: true,
-                        rightKey: true,
-                    },
-                    contentType: "application/json; charset=utf-8",
-                    method: "POST",
-                    url: "/settings/zones" + url,
-                    data: JSON.stringify({'zoneName': zoneName})
-                }).done(function (data, status) {
-                    console.log("${data} and status is ${status}");
-                });
-            }
-
-            function onAdd(e) {
-                tagRequest("/add", e.detail.data.value);
-            }
-
-            function onRemove(e) {
-                tagRequest("/remove", e.detail.data.value);
-            }
-
-            var tagInput = document.querySelector("#tags");
-
-            var tagify = new Tagify(tagInput, {
-                pattern: /^.{0,50}$/,
-                whitelist: JSON.parse(document.querySelector("#whitelist").textContent),
-                dropdown: {
-                    enabled: 1,
-                }
-            });
-
-            tagify.on("add", onAdd);
-            tagify.on("remove", onRemove);
-
-            tagify.DOM.input.classList.add('form-control');
-            tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
-        });
-
-    </script>
+    <script th:replace="fragments.html :: update-zones(baseUrl = '/study/' + ${study.getPath()} + '/settings/zones')"></script>
 </body>
 </html>

@@ -12,7 +12,7 @@ import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
 
 @Slf4j
-@Profile("dev")
+@Profile({"dev", "service"})
 @Component
 @RequiredArgsConstructor
 public class HtmlEmailService implements EmailService {
