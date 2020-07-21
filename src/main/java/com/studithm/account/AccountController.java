@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 
 
 @Controller
@@ -68,13 +67,13 @@ public class AccountController {
     }
 
     @GetMapping("/check-email")
-    public String checkEmailForm(@CurrentUser Account account, Model model) {
+    public String checkEmailForm(@CurrentAccount Account account, Model model) {
         model.addAttribute("email", account.getEmail());
         return "account/check-email";
     }
 
     @GetMapping("/resend-confirm-email")
-    public String resendConfirmEmail(@CurrentUser Account account, Model model) {
+    public String resendConfirmEmail(@CurrentAccount Account account, Model model) {
         if (!account.canSendConfirmEmail()) {
             model.addAttribute("error", "인증 이메일은 1시간에 한번만 전송할 수 있습니다.");
             model.addAttribute("email", account.getEmail());
@@ -86,7 +85,7 @@ public class AccountController {
     }
 
     @GetMapping("/profile/{nickname}")
-    public String viewProfile(@PathVariable String nickname, Model model, @CurrentUser Account account) {
+    public String viewProfile(@PathVariable String nickname, Model model, @CurrentAccount Account account) {
 
         Account accountToView = accountService.getAccount(nickname);
 

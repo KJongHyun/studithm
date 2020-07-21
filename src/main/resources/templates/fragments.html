@@ -173,17 +173,21 @@
                 </span>
             <span sec:authorize="isAuthenticated()" th:if="${study.isJoinable(#authentication.principal)}"
                   class="btn-group" role="group" aria-label="Basic example">
-                    <a class="btn btn-primary" th:href="@{'/study/' + ${study.path} + '/join'}">
+                <form th:action="@{'/study/' + ${study.path} + '/join'}" method="post">
+                    <button class="btn btn-primary" type="submit">
                         스터디 가입
-                    </a>
+                    </button>
+                </form>
                     <a class="btn btn-outline-primary" th:href="@{'/study/' + ${study.path} + '/members'}"
                        th:text="${study.members.size()}">1</a>
                 </span>
             <span sec:authorize="isAuthenticated()"
                   th:if="${!study.closed && study.isMember(#authentication.principal)}" class="btn-group" role="group">
-                   <a class="btn btn-outline-warning" th:href="@{'/study/' + ${study.path} + '/leave'}">
+                <form th:action="@{'/study/' + ${study.path} + '/leave'}" method="post">
+                   <button class="btn btn-outline-warning" type="submit">
                        스터디 탈퇴
-                   </a>
+                   </button>
+                </form>
                     <a class="btn btn-outline-primary" th:href="@{'/study/' + ${study.path} + '/members'}"
                        th:text="${study.members.size()}">1</a>
                 </span>
@@ -255,7 +259,7 @@
     <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'banner'}? active" th:href="@{'/study/' + ${study.path} + '/settings/banner'}">배너 이미지</a>
     <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'tags'}? active" th:href="@{'/study/' + ${study.path} + '/settings/tags'}">스터디 주제</a>
     <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'zones'}? active" th:href="@{'/study/' + ${study.path} + '/settings/zones'}">활동 지역</a>
-    <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'zoness'}? active" th:href="@{/settings/zones}">스터디</a>
+    <a href="#" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'study'}? active" th:href="@{'/study/' + ${study.path} + '/settings/study'}">스터디</a>
 </div>
 <div th:fragment="editor-script">
     <script src="/node_modules/summernote/dist/summernote-bs4.js"></script>
@@ -373,4 +377,9 @@
 
     </script>
 </div>
+<script type="application/javascript" th:fragment="tooltip">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 </html>

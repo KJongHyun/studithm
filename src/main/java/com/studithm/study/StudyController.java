@@ -1,6 +1,6 @@
 package com.studithm.study;
 
-import com.studithm.account.CurrentUser;
+import com.studithm.account.CurrentAccount;
 import com.studithm.domain.Account;
 import com.studithm.domain.Study;
 import com.studithm.study.form.StudyForm;
@@ -36,7 +36,7 @@ public class StudyController {
     }
 
     @GetMapping("/study/{path}")
-    public String viewStudy(@CurrentUser Account account, @PathVariable String path, Model model) {
+    public String viewStudy(@CurrentAccount Account account, @PathVariable String path, Model model) {
         Study study = studyService.getStudy(path);
         model.addAttribute(account);
         model.addAttribute(study);
@@ -46,14 +46,14 @@ public class StudyController {
 
 
     @GetMapping("/new-study")
-    public String newStudyForm(@CurrentUser Account account, Model model) {
+    public String newStudyForm(@CurrentAccount Account account, Model model) {
         model.addAttribute(account);
         model.addAttribute(new StudyForm());
         return "study/form";
     }
 
     @PostMapping("/new-study")
-    public String newStudySubmit(@CurrentUser Account account, @Valid StudyForm studyForm, Errors errors, Model model) {
+    public String newStudySubmit(@CurrentAccount Account account, @Valid StudyForm studyForm, Errors errors, Model model) {
         if (errors.hasErrors()) {
             model.addAttribute(account);
             return "study/form";
@@ -65,10 +65,25 @@ public class StudyController {
     }
 
     @GetMapping("/study/{path}/members")
-    public String viewStudyMembers(@CurrentUser Account account, @PathVariable String path, Model model) {
+    public String viewStudyMembers(@CurrentAccount Account account, @PathVariable String path, Model model) {
         Study study = studyService.getStudy(path);
         model.addAttribute(account);
         model.addAttribute(study);
         return "study/members";
+    }
+
+    @PostMapping("/study/{path}/join")
+    public String joinStudy(@CurrentAccount Account account, @PathVariable String path) {
+        Study study = studyRepository.findStudyWithMembersByPath(path);
+        studyService.addMember(study, account);
+
+        return "redirect:/study/" + study.getEncodedPath() + "/members";
+    }
+
+    @PostMapping("/study/{path}/leave")
+    public String leaveStudy(@CurrentAccount Account account, @PathVariable String path) {
+        Study study = studyRepository.findStudyWithMembersByPath(path);
+        studyService.removeMember(study, account);
+        return "redirect:/study/" + study.getEncodedPath() + "/members";
     }
 }

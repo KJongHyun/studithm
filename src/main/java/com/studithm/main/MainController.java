@@ -1,6 +1,6 @@
 package com.studithm.main;
 
-import com.studithm.account.CurrentUser;
+import com.studithm.account.CurrentAccount;
 import com.studithm.domain.Account;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainController {
 
     @GetMapping("/")
-    public String home(@CurrentUser Account account, Model model) {
+    public String home(@CurrentAccount Account account, Model model) {
         if (account != null) {
             model.addAttribute(account);
         }
