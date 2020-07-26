@@ -1,12 +1,14 @@
 package com.studithm.modules.study;
 
 import com.studithm.modules.account.Account;
+import com.studithm.modules.study.event.StudyCreatedEvent;
 import com.studithm.modules.study.form.StudyDescriptionForm;
 import com.studithm.modules.study.form.StudyForm;
 import com.studithm.modules.tag.Tag;
 import com.studithm.modules.zone.Zone;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,12 +20,12 @@ public class StudyService {
 
     private final StudyRepository studyRepository;
     private final ModelMapper modelMapper;
+    private final ApplicationEventPublisher eventPublisher;
 
     public Study createNewStudy(Study study, Account account) {
 
         Study newStudy = studyRepository.save(study);
         newStudy.addManager(account);
-
         return newStudy;
     }
 
@@ -110,6 +112,7 @@ public class StudyService {
 
     public void publish(Study study) {
         study.publish();
+        this.eventPublisher.publishEvent(new StudyCreatedEvent(study));
     }
 
     public void close(Study study) {
