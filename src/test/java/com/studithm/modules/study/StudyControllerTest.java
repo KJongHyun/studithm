@@ -1,6 +1,8 @@
 package com.studithm.modules.study;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.studithm.infra.AbstractContainerBaseTest;
+import com.studithm.infra.MockMvcTest;
 import com.studithm.modules.account.WithAccount;
 import com.studithm.modules.account.Account;
 import com.studithm.modules.account.AccountRepository;
@@ -20,18 +22,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@Transactional
-@SpringBootTest
-@AutoConfigureMockMvc
-class StudyControllerTest {
+@MockMvcTest
+class StudyControllerTest extends AbstractContainerBaseTest {
 
-    @Autowired
-    MockMvc mockMvc;
-    @Autowired
-    ObjectMapper objectMapper;
+    @Autowired MockMvc mockMvc;
+    @Autowired ObjectMapper objectMapper;
     @Autowired StudyRepository studyRepository;
     @Autowired AccountRepository accountRepository;
     @Autowired StudyService studyService;
+    @Autowired StudyFactory studyFactory;
 
     @AfterEach
     void afterEach() {
@@ -98,16 +97,12 @@ class StudyControllerTest {
     @WithAccount("jonghyeon1")
     @DisplayName("스터디 조회")
     void viewStudy() throws Exception {
-        Study study = new Study();
-        study.setPath("test-path");
-        study.setTitle("test study");
-        study.setShortDescription("short description");
-        study.setFullDescription("<p>full description</p>");
+        String path = "test-path";
 
         Account account = accountRepository.findByNickname("jonghyeon1");
-        studyService.createNewStudy(study, account);
+        studyFactory.creatStudy(path, account);
 
-        mockMvc.perform(get("/study/" + study.getPath()))
+        mockMvc.perform(get("/study/" + path))
                 .andExpect(view().name("study/view"))
                 .andExpect(model().attributeExists("account"))
                 .andExpect(model().attributeExists("study"));

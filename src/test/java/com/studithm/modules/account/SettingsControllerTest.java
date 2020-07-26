@@ -1,6 +1,8 @@
 package com.studithm.modules.account;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.studithm.infra.AbstractContainerBaseTest;
+import com.studithm.infra.MockMvcTest;
 import com.studithm.modules.zone.Zone;
 import com.studithm.modules.zone.ZoneForm;
 import com.studithm.modules.zone.ZoneRepository;
@@ -23,10 +25,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@Transactional
-class SettingsControllerTest {
+@MockMvcTest
+class SettingsControllerTest extends AbstractContainerBaseTest {
 
     @Autowired MockMvc mockMvc;
     @Autowired AccountRepository accountRepository;
