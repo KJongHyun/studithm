@@ -57,7 +57,7 @@ public class Account {
     private boolean studyUpdatedByWeb = true;
 
     @ManyToMany
-    private List<Tag> tags = new ArrayList<>();
+    private Set<Tag> tags = new HashSet<>();
 
     @ManyToMany
     @Builder.Default

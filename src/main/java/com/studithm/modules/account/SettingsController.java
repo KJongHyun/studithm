@@ -134,7 +134,7 @@ public class SettingsController {
     @GetMapping(TAGS)
     public String updateTagsForm(@CurrentAccount Account account, Model model) throws JsonProcessingException {
         model.addAttribute(account);
-        List<Tag> tags = accountService.getTags(account);
+        Set<Tag> tags = accountService.getTags(account);
         model.addAttribute("tags", tags.stream().map(Tag::getTitle).collect(Collectors.toList()));
 
         List<String> allTags = tagRepository.findAll().stream().map(Tag::getTitle).collect(Collectors.toList());

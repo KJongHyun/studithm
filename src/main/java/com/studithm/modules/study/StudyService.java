@@ -6,13 +6,17 @@ import com.studithm.modules.study.event.StudyUpdateEvent;
 import com.studithm.modules.study.form.StudyDescriptionForm;
 import com.studithm.modules.study.form.StudyForm;
 import com.studithm.modules.tag.Tag;
+import com.studithm.modules.tag.TagRepository;
 import com.studithm.modules.zone.Zone;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.utility.RandomString;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
 
 @Service
 @Transactional
@@ -22,6 +26,8 @@ public class StudyService {
     private final StudyRepository studyRepository;
     private final ModelMapper modelMapper;
     private final ApplicationEventPublisher eventPublisher;
+
+    private final TagRepository tagRepository;
 
     public Study createNewStudy(Study study, Account account) {
 
@@ -171,5 +177,23 @@ public class StudyService {
         Study study = studyRepository.findStudyOnlyByPath(path);
         checkIfExistingStudy(path, study);
         return study;
+    }
+
+    public void generateTestStudies(Account account) {
+        for (int i = 0; i < 30; i++) {
+            String randomValue = RandomString.make(5);
+            Study study = Study.builder()
+                    .title("테스트 스터디 " + randomValue)
+                    .path("test-" + randomValue)
+                    .shortDescription("테스트용 스터디 입니다.")
+                    .fullDescription("test")
+                    .tags(new HashSet<>())
+                    .managers(new HashSet<>())
+                    .build();
+            study.publish();
+            Study newStudy = this.createNewStudy(study, account);
+            Tag jpa = tagRepository.findByTitle("jpa");
+            newStudy.getTags().add(jpa);
+        }
     }
 }
