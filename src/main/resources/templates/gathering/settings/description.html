@@ -6,7 +6,7 @@
     <div th:replace="fragments.html::gathering-banner"></div>
     <div class="container">
         <div th:replace="fragments.html::gathering-info"></div>
-        <div th:replace="fragments.html::gathering-menu(studyMenu='settings')"></div>
+        <div th:replace="fragments.html::gathering-menu(gatheringMenu='settings')"></div>
         <div class="row mt-5 justify-content-center">
             <div class="col-2">
                 <div th:replace="fragments.html::gathering-settings-menu(currentMenu='description', path=${gathering.path})"></div>
@@ -23,10 +23,10 @@
                     <div class="form-group">
                         <label for="shortDescription">짧은 소개</label>
                         <textarea id="shortDescription" type="textarea" th:field="*{shortDescription}" class="form-control"
-                               placeholder="스터디를 짧게 소개해 주세요." aria-describedby="shortDescriptionHelp" required maxlength="100">
+                               placeholder="모임을 짧게 소개해 주세요." aria-describedby="shortDescriptionHelp" required maxlength="100">
                         </textarea>
                         <small id="shortDescriptionHelp" class="form-text text-muted">
-                            100자 이내로 스터디를 짧은 소개해 주세요.
+                            100자 이내로 모임을 짧은 소개해 주세요.
                         </small>
                         <small class="invalid-feedback">짧은 소개를 입력하세요.</small>
                         <small class="form-text text-danger" th:if="${#fields.hasErrors('shortDescription')}" th:errors="*{shortDescription}">
@@ -37,10 +37,10 @@
                     <div class="form-group">
                         <label for="fullDescription">상세 소개</label>
                         <textarea id="fullDescription" type="textarea" th:field="*{fullDescription}" class="editor form-control"
-                               placeholder="스터디를 자세히 설명해 주세요." aria-describedby="fullDescriptionHelp" required>
+                               placeholder="모임을 자세히 설명해 주세요." aria-describedby="fullDescriptionHelp" required>
                         </textarea>
                         <small id="fullDescriptionHelp" class="form-text text-muted">
-                            스터디의 목표, 일정, 진행 방식, 사용할 교재 또는 인터넷 강좌 그리고 모집중인 스터디원 등 스터디에 대해 자세히 적어 주세요.
+                            모임의 목표, 일정, 진행 방식, 사용할 교재 또는 인터넷 강좌 그리고 모집중인 모임원 등 모임에 대해 자세히 적어 주세요.
                         </small>
                         <small class="invalid-feedback">상세 소개를 입력하세요.</small>
                         <small class="form-text text-danger" th:if="${#fields.hasErrors('fullDescription')}" th:errors="*{fullDescription}">

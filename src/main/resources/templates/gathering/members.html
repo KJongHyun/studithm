@@ -6,7 +6,7 @@
     <div th:replace="fragments :: gathering-banner"></div>
     <div class="container">
         <div th:replace="fragments :: gathering-info"></div>
-        <div th:replace="fragments :: gathering-menu(studyMenu='members')"></div>
+        <div th:replace="fragments :: gathering-menu(gatheringMenu='members')"></div>
         <div th:replace="fragments :: member-list(members=${gathering.managers},isManager=${true})"></div>
         <div th:replace="fragments :: member-list(members=${gathering.members},isManager=${false})"></div>
         <div th:replace="fragments :: footer"></div>

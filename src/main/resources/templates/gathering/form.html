@@ -5,38 +5,38 @@
     <div th:replace="fragments.html::main-nav"></div>
     <div class="container">
         <div class="py-5 text-center">
-            <h2>스터디 개설</h2>
+            <h2>모임 개설</h2>
         </div>
         <div class="row justify-content-center">
             <form class="needs-validation col-sm-10" th:action="@{/new-gathering}" th:object="${gatheringForm}" method="post" novalidate>
                 <div class="form-group">
-                    <label for="path">스터디 URL</label>
+                    <label for="path">모임 URL</label>
                     <input id="path" type="text" th:field="*{path}" class="form-control"
                            placeholder="예) gathering-path" aria-describedby="pathHelp" required min="2" max="20">
                     <small id="pathHelp" class="form-text text-muted">
-                        공백없이 문자, 숫자, 대시(-)와 언더바(_)만 2  자 이상 20자 이내로 입력하세요. 스터디 홈 주소에 사용합니다. 예) /gathering/<b>gathering-path</b>
+                        공백없이 문자, 숫자, 대시(-)와 언더바(_)만 2  자 이상 20자 이내로 입력하세요. 모임 홈 주소에 사용합니다. 예) /gathering/<b>gathering-path</b>
                     </small>
-                    <small class="invalid-feedback">스터디 경로를 입력하세요.</small>
+                    <small class="invalid-feedback">모임 경로를 입력하세요.</small>
                     <small class="form-text text-danger" th:if="${#fields.hasErrors('path')}" th:errors="*{path}">Path Error</small>
                 </div>
 
                 <div class="form-group">
-                    <label for="title">스터디 이름</label>
+                    <label for="title">모임 이름</label>
                     <input id="title" type="text" th:field="*{title}" class="form-control"
-                    placeholder="스터디 이름" aria-describedby="titleHelp" required max="50">
+                    placeholder="모임 이름" aria-describedby="titleHelp" required max="50">
                     <small id="titleHelp" class="form-text text-muted">
-                        스터디 이름을 50자 이내로 입력하세요.
+                        모임 이름을 50자 이내로 입력하세요.
                     </small>
-                    <small class="invalid-feedback">스터디 이름을 입력하세요.</small>
+                    <small class="invalid-feedback">모임 이름을 입력하세요.</small>
                     <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</small>
                 </div>
 
                 <div class="form-group">
                     <label for="shortDescription">짧은 소개</label>
                     <textarea id="shortDescription" type="text" th:field="*{shortDescription}" class="form-control"
-                              placeholder="스터디를 짧게 소개해 주세요." aria-describedby="shortDescriptionHelp" required maxlength="100"></textarea>
+                              placeholder="모임을 짧게 소개해 주세요." aria-describedby="shortDescriptionHelp" required maxlength="100"></textarea>
                     <small id="shortDescriptionHelp" class="form-text text-muted">
-                        100자 이내로 스터디를 짧은 소개해 주세요.
+                        100자 이내로 모임을 짧은 소개해 주세요.
                     </small>
                     <small class="invalid-feedback">짧은 소개를 입력하세요.</small>
                     <small class="form-text text-danger" th:if="${#fields.hasErrors('shortDescription')}" th:errors="*{shortDescription}">shortDescription Error</small>
@@ -45,9 +45,9 @@
                 <div class="form-group">
                     <label for="fullDescription">상세 소개</label>
                     <textarea id="fullDescription" type="text" th:field="*{fullDescription}" class="editor form-control"
-                              placeholder="스터디를 자세히 소개해 주세요." aria-describedby="fullDescription" required></textarea>
+                              placeholder="모임을 자세히 소개해 주세요." aria-describedby="fullDescription" required></textarea>
                     <small id="fullDescriptionHelp" class="form-text text-muted">
-                        스터디의 목표, 일정, 진행 방식, 사용할 교재 또는 인터넷 강좌 그리고 모집중인 스터디원 등 스터디에 대해 자세히 적어 주세요.
+                        모임의 목표, 일정, 진행 방식, 사용할 교재 또는 인터넷 강좌 그리고 모집중인 모임원 등 모임에 대해 자세히 적어 주세요.
                     </small>
                     <small class="invalid-feedback">상세 소개 입력하세요.</small>
                     <small class="form-text text-danger" th:if="${#fields.hasErrors('fullDescription')}" th:errors="*{fullDescription}">fullDescription Error</small>
@@ -55,7 +55,7 @@
 
                 <div class="form-group">
                     <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">
-                        스터디 만들기
+                        모임 만들기
                    </button>
                 </div>
 
@@ -69,7 +69,7 @@
         $(function () {
             $('#fullDescription').summernote({
                 fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Noto Sans KR', 'Merriweather'],
-                placeholder: '스터디의 목표, 일정, 진행 방식, 사용할 교재 또는 인터넷 강좌 그리고 모집중인 스터디원 등 스터디에 대해 자세히 적어주세요.',
+                placeholder: '모임의 목표, 일정, 진행 방식, 사용할 교재 또는 인터넷 강좌 그리고 모집중인 모임원 등 모임에 대해 자세히 적어주세요.',
                 tabsize: 2,
                 height: 300
             })
