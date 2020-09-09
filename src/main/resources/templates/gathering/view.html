@@ -3,14 +3,14 @@
 <head th:replace="fragments.html::head"></head>
 <body class="bg-light">
     <div th:replace="fragments.html::main-nav"></div>
-    <div th:replace="fragments.html::study-banner"></div>
+    <div th:replace="fragments.html::gathering-banner"></div>
 
     <div class="container">
-        <div th:replace="fragments.html::study-info"></div>
-        <div th:replace="fragments.html::study-menu(studyMenu='info')"></div>
+        <div th:replace="fragments.html::gathering-info"></div>
+        <div th:replace="fragments.html::gathering-menu(studyMenu='info')"></div>
 
         <div class="row px-3 justify-content-center">
-            <div class="col-10 pt3" th:utext="${study.fullDescription}"></div>
+            <div class="col-10 pt3" th:utext="${gathering.fullDescription}"></div>
         </div>
 
         <div th:replace="fragments.html::footer"></div>

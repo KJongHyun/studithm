@@ -5,8 +5,8 @@ import com.studithm.modules.account.AccountRepository;
 import com.studithm.modules.account.CurrentAccount;
 import com.studithm.modules.event.Enrollment;
 import com.studithm.modules.event.EnrollmentRepository;
-import com.studithm.modules.study.Study;
-import com.studithm.modules.study.StudyRepository;
+import com.studithm.modules.Gathering.Gathering;
+import com.studithm.modules.Gathering.GatheringRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainController {
 
-    private final StudyRepository studyRepository;
+    private final GatheringRepository gatheringRepository;
     private final AccountRepository accountRepository;
     private final EnrollmentRepository enrollmentRepository;
 
@@ -35,17 +35,17 @@ public class MainController {
             List<Enrollment> enrollmentList = enrollmentRepository.findByAccountAndAcceptedOrderByEnrolledAt(loginAccount, true);
             model.addAttribute("enrollmentList", enrollmentList);
 
-            List<Study> studyList = studyRepository.findByTagsAndZones(loginAccount.getTags(), loginAccount.getZones());
-            model.addAttribute("studyList", studyList);
+            List<Gathering> gatheringList = gatheringRepository.findByTagsAndZones(loginAccount.getTags(), loginAccount.getZones());
+            model.addAttribute("gatheringList", gatheringList);
 
 
-            model.addAttribute("manageStudyList", studyRepository.findFirst5ByManagersContainingAndClosedOrderByPublishedDateTimeDesc(account, false));
-            model.addAttribute("memberStudyList", studyRepository.findFirst5ByMembersContainingAndClosedOrderByPublishedDateTimeDesc(account, false));
+            model.addAttribute("manageGatheringList", gatheringRepository.findFirst5ByManagersContainingAndClosedOrderByPublishedDateTimeDesc(account, false));
+            model.addAttribute("memberGatheringList", gatheringRepository.findFirst5ByMembersContainingAndClosedOrderByPublishedDateTimeDesc(account, false));
             return "index-after-login";
         }
 
-        List<Study> studyList = studyRepository.findTop9ByPublishedAndClosedOrderByPublishedDateTimeDesc(true, false);
-        model.addAttribute("studyList", studyList);
+        List<Gathering> gatheringList = gatheringRepository.findTop9ByPublishedAndClosedOrderByPublishedDateTimeDesc(true, false);
+        model.addAttribute("gatheringList", gatheringList);
 
         return "index";
     }
@@ -55,11 +55,11 @@ public class MainController {
         return "login";
     }
 
-    @GetMapping("/search/study") //TODO size, page, sort
-    public String searchStudy(String keyword, Model model,
+    @GetMapping("/search/gathering") //TODO size, page, sort
+    public String searchGathering(String keyword, Model model,
             @PageableDefault(size = 9, sort = "publishedDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<Study> studyPage = studyRepository.findByKeyword(keyword, pageable);
-        model.addAttribute("studyPage", studyPage);
+        Page<Gathering> gatheringPage = gatheringRepository.findByKeyword(keyword, pageable);
+        model.addAttribute("gatheringPage", gatheringPage);
         model.addAttribute("keyword", keyword);
         model.addAttribute("sortProperty", pageable.getSort().toString().contains("publishedDateTime") ? "publishedDateTime" : "memberCount");
         return "search";

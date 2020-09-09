@@ -1,4 +1,4 @@
-package com.studithm.modules.study;
+package com.studithm.modules.Gathering;
 
 import com.studithm.modules.account.Account;
 import com.studithm.modules.tag.Tag;
@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.Set;
 
 @Transactional(readOnly = true)
-public interface StudyRepositoryExtension {
+public interface GatheringRepositoryExtension {
 
-    Page<Study> findByKeyword(String keyword, Pageable pageable);
+    Page<Gathering> findByKeyword(String keyword, Pageable pageable);
 
-    List<Study> findByTagsAndZones(Set<Tag> tags, Set<Zone> zones);
+    List<Gathering> findByTagsAndZones(Set<Tag> tags, Set<Zone> zones);
 
-    List<Study> findByManager(Account account);
+    List<Gathering> findByManager(Account account);
 
-    List<Study> findByMember(Account account);
+    List<Gathering> findByMember(Account account);
 }

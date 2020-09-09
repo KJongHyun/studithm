@@ -2,6 +2,6 @@ package com.studithm.modules.notification;
 
 public enum NotificationType {
 
-    STUDY_CREATED, STUDY_UPDATED, EVENT_ENROLLMENT;
+    GATHERING_CREATED, GATHERING_UPDATED, EVENT_ENROLLMENT;
 
 }

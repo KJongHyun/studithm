@@ -4,7 +4,7 @@
 <body class="bg-light">
     <div th:replace="fragments.html::main-nav"></div>
     <div class="alert alert-warning" role="alert" th:if="${account != null && !account.emailVerified}">
-        스터디즘에 가입을 완료하려면 <a href="#" th:href="@{/check-email}" class="alert-link">계정 인증 이메일을 확인</a>하세요.
+        라이트닝에 가입을 완료하려면 <a href="#" th:href="@{/check-email}" class="alert-link">계정 인증 이메일을 확인</a>하세요.
     </div>
     <div class="container mt-4">
         <div class="row">
@@ -36,23 +36,23 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title" th:text="${enrollment.event.title}">title</h5>
-                                <h6 class="card-subtitle mb-2 text-muted" th:text="${enrollment.event.study.title}">Study title</h6>
+                                <h6 class="card-subtitle mb-2 text-muted" th:text="${enrollment.event.gathering.title}">Study title</h6>
                                 <p class="card-text">
                                     <span>
                                         <i class="fa fa-calendar"></i>
                                         <span class="calendar" th:text="${enrollment.event.startDateTime}"></span>
                                     </span>
                                 </p>
-                                <a href="#" th:href="@{'/study/' + ${enrollment.event.study.path} + '/events/' + ${enrollment.event.id}}" class="card-link">모임 조회</a>
-                                <a href="#" th:href="@{'/study/' + ${enrollment.event.study.path}}" class="card-link">스터디 조회</a>
+                                <a href="#" th:href="@{'/gathering/' + ${enrollment.event.gathering.path} + '/events/' + ${enrollment.event.id}}" class="card-link">모임 조회</a>
+                                <a href="#" th:href="@{'/gathering/' + ${enrollment.event.gathering.path}}" class="card-link">스터디 조회</a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <h5 class="font-weight-light mt-3" th:if="${#lists.isEmpty(studyList)}">관련 스터디가 없습니다.</h5>
-                <h5 class="font-weight-light mt-3" th:if="${!#lists.isEmpty(studyList)}">주요 활동 지역의 관심 주제 스터디</h5>
+                <h5 class="font-weight-light mt-3" th:if="${#lists.isEmpty(gatheringList)}">관련 스터디가 없습니다.</h5>
+                <h5 class="font-weight-light mt-3" th:if="${!#lists.isEmpty(gatheringList)}">주요 활동 지역의 관심 주제 스터디</h5>
                 <div class="justify-content-center">
-                    <div th:replace="fragments.html :: study-list (studylist = ${studyList})"></div>
+                    <div th:replace="fragments.html :: gathering-list (studylist = ${gatheringList})"></div>
                 </div>
 
             </div>
@@ -60,15 +60,15 @@
                 <h5 class="font-weight-light" th:if="${#lists.isEmpty(manageStudyList)}">관리중인 스터디가 없습니다.</h5>
                 <h5 class="font-weight-light" th:if="${!#lists.isEmpty(manageStudyList)}">관리중인 스터디</h5>
                 <div class="list-group" th:if="${!#lists.isEmpty(manageStudyList)}">
-                    <a href="#" th:href="@{'/study/' + ${study.path}}" th:text="${study.title}"
-                       class="list-group-item list-group-item-action" th:each="study: ${manageStudyList}"></a>
+                    <a href="#" th:href="@{'/gathering/' + ${gathering.path}}" th:text="${gathering.title}"
+                       class="list-group-item list-group-item-action" th:each="gathering: ${manageStudyList}"></a>
                 </div>
 
                 <h5 class="font-weight-light mt-3" th:if="${#lists.isEmpty(memberStudyList)}">참여중인 스터디가 없습니다.</h5>
                 <h5 class="font-weight-light mt-3" th:if="${!#lists.isEmpty(memberStudyList)}">참여중인 스터디</h5>
                 <div class="list-group" th:if="${!#lists.isEmpty(memberStudyList)}">
-                    <a href="#" th:href="@{'/study/' + ${study.path}}" th:text="${study.title}"
-                       class="list-group-item list-group-item-action" th:each="study: ${memberStudyList}"></a>
+                    <a href="#" th:href="@{'/gathering/' + ${gathering.path}}" th:text="${gathering.title}"
+                       class="list-group-item list-group-item-action" th:each="gathering: ${memberStudyList}"></a>
                 </div>
             </div>
         </div>

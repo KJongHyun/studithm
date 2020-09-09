@@ -5,13 +5,13 @@
 <head th:replace="fragments.html :: head"></head>
 <body>
 <nav th:replace="fragments.html :: main-nav"></nav>
-<div th:replace="fragments.html :: study-banner"></div>
+<div th:replace="fragments.html :: gathering-banner"></div>
 <div class="container">
     <div class="row py-4 text-left justify-content-center bg-light">
         <div class="col-6">
                 <span class="h2">
-                <a href="#" class="text-decoration-none" th:href="@{'/study/' + ${study.path}}">
-                    <span th:text="${study.title}">스터디 이름</span>
+                <a href="#" class="text-decoration-none" th:href="@{'/gathering/' + ${gathering.path}}">
+                    <span th:text="${gathering.title}">스터디 이름</span>
                 </a> / </span>
             <span class="h2" th:text="${event.title}"></span>
         </div>
@@ -46,7 +46,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                        <form th:action="@{'/study/' + ${study.path} + '/events/' + ${event.id} + '/disenroll'}" method="post">
+                        <form th:action="@{'/gathering/' + ${gathering.path} + '/events/' + ${event.id} + '/disenroll'}" method="post">
                             <button class="btn btn-primary" type="submit" aria-describedby="submitHelp">확인</button>
                         </form>
                     </div>
@@ -69,7 +69,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                        <form th:action="@{'/study/' + ${study.path} + '/events/' + ${event.id} + '/enroll'}" method="post">
+                        <form th:action="@{'/gathering/' + ${gathering.path} + '/events/' + ${event.id} + '/enroll'}" method="post">
                             <button class="btn btn-primary" type="submit" aria-describedby="submitHelp">확인</button>
                         </form>
                     </div>
@@ -91,10 +91,10 @@
                         <th scope="col">참석자</th>
                         <th scope="col">참가 신청 일시</th>
                         <th scope="col">참가 상태</th>
-                        <th th:if="${study.isManager(#authentication.principal)}" scope="col">
+                        <th th:if="${gathering.isManager(#authentication.principal)}" scope="col">
                             참가 신청 관리
                         </th>
-                        <th th:if="${study.isManager(#authentication.principal)}" scope="col">
+                        <th th:if="${gathering.isManager(#authentication.principal)}" scope="col">
                             출석 체크
                         </th>
                     </tr>
@@ -119,25 +119,25 @@
                             <span th:if="${enroll.accepted}">확정</span>
                             <span th:if="${!enroll.accepted}">대기중</span>
                         </td>
-                        <td th:if="${study.isManager(#authentication.principal)}">
-                            <form th:if="${event.canAccept(enroll)}" th:action="@{'/study/' + ${study.path} + '/events/' + ${event.id} + '/enrollments/' + ${enroll.id} + '/accept'}" method="post">
+                        <td th:if="${gathering.isManager(#authentication.principal)}">
+                            <form th:if="${event.canAccept(enroll)}" th:action="@{'/gathering/' + ${gathering.path} + '/events/' + ${event.id} + '/enrollments/' + ${enroll.id} + '/accept'}" method="post">
                                 <button class="btn btn-primary" type="submit">
                                     신청 수락
                                 </button>
                             </form>
-                            <form th:if="${event.canReject(enroll)}" th:action="@{'/study/' + ${study.path} + '/events/' + ${event.id} + '/enrollments/' + ${enroll.id} + '/reject'}" method="post">
+                            <form th:if="${event.canReject(enroll)}" th:action="@{'/gathering/' + ${gathering.path} + '/events/' + ${event.id} + '/enrollments/' + ${enroll.id} + '/reject'}" method="post">
                                 <button class="btn btn-primary" type="submit">
                                     취소
                                 </button>
                             </form>
                         </td>
-                        <td th:if="${study.isManager(#authentication.principal)}">
-                            <form th:if="${enroll.accepted && !enroll.attended}" th:action="@{'/study/' + ${study.path} + '/events/' + ${event.id} + '/enrollments/' + ${enroll.id} + '/checkin'}" method="post">
+                        <td th:if="${gathering.isManager(#authentication.principal)}">
+                            <form th:if="${enroll.accepted && !enroll.attended}" th:action="@{'/gathering/' + ${gathering.path} + '/events/' + ${event.id} + '/enrollments/' + ${enroll.id} + '/checkin'}" method="post">
                                 <button class="btn btn-primary" type="submit">
                                     체크인
                                 </button>
                             </form>
-                            <form th:if="${enroll.accepted && enroll.attended}" th:action="@{'/study/' + ${study.path} + '/events/' + ${event.id} + '/enrollments/' + ${enroll.id} + '/cancel-checkin'}" method="post">
+                            <form th:if="${enroll.accepted && enroll.attended}" th:action="@{'/gathering/' + ${gathering.path} + '/events/' + ${event.id} + '/enrollments/' + ${enroll.id} + '/cancel-checkin'}" method="post">
                                 <button class="btn btn-primary" type="submit">
                                     체크인 취소
                                 </button>
@@ -186,10 +186,10 @@
                 </a>
             </dd>
 
-            <dt th:if="${study.isManager(#authentication.principal)}" class="font-weight-light">모임 관리</dt>
-            <dd th:if="${study.isManager(#authentication.principal)}">
+            <dt th:if="${gathering.isManager(#authentication.principal)}" class="font-weight-light">모임 관리</dt>
+            <dd th:if="${gathering.isManager(#authentication.principal)}">
                 <a class="btn btn-outline-primary btn-sm my-1"
-                   th:href="@{'/study/' + ${study.path} + '/events/' + ${event.id} + '/edit'}" >
+                   th:href="@{'/gathering/' + ${gathering.path} + '/events/' + ${event.id} + '/edit'}" >
                     모임 수정
                 </a> <br/>
                 <button class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#cancel">
@@ -213,7 +213,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                        <form th:action="@{'/study/' + ${study.path} + '/events/' + ${event.id}}" th:method="delete">
+                        <form th:action="@{'/gathering/' + ${gathering.path} + '/events/' + ${event.id}}" th:method="delete">
                             <button class="btn btn-primary" type="submit" aria-describedby="submitHelp">확인</button>
                         </form>
                     </div>

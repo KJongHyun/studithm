@@ -1,4 +1,4 @@
-package com.studithm.modules.study.form;
+package com.studithm.modules.Gathering.form;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @NoArgsConstructor
-public class StudyDescriptionForm {
+public class GatheringDescriptionForm {
     @NotBlank
     @Length(max = 100)
     private String shortDescription;

@@ -3,12 +3,12 @@
 <head th:replace="fragments.html :: head"></head>
 <body>
     <div th:replace="fragments :: main-nav"></div>
-    <div th:replace="fragments :: study-banner"></div>
+    <div th:replace="fragments :: gathering-banner"></div>
     <div class="container">
-        <div th:replace="fragments :: study-info"></div>
-        <div th:replace="fragments :: study-menu(studyMenu='members')"></div>
-        <div th:replace="fragments :: member-list(members=${study.managers},isManager=${true})"></div>
-        <div th:replace="fragments :: member-list(members=${study.members},isManager=${false})"></div>
+        <div th:replace="fragments :: gathering-info"></div>
+        <div th:replace="fragments :: gathering-menu(studyMenu='members')"></div>
+        <div th:replace="fragments :: member-list(members=${gathering.managers},isManager=${true})"></div>
+        <div th:replace="fragments :: member-list(members=${gathering.members},isManager=${false})"></div>
         <div th:replace="fragments :: footer"></div>
     </div>
     <script type="application/javascript">

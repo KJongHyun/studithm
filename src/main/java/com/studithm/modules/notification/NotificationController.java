@@ -45,23 +45,23 @@ public class NotificationController {
     }
 
     private void putCategorizedNotifications(Model model, List<Notification> notifications, long numberOfChecked, long numberOfNotChecked) {
-        List<Notification> newStudyNotifications = new ArrayList<>();
+        List<Notification> newGatheringNotifications = new ArrayList<>();
         List<Notification> eventEnrollmentNotifications = new ArrayList<>();
-        List<Notification> watchingStudyNotifications = new ArrayList<>();
+        List<Notification> watchingGatheringNotifications = new ArrayList<>();
         for (var notification : notifications) {
             switch (notification.getNotificationType()) {
-                case STUDY_CREATED: newStudyNotifications.add(notification); break;
+                case GATHERING_CREATED: newGatheringNotifications.add(notification); break;
                 case EVENT_ENROLLMENT: eventEnrollmentNotifications.add(notification); break;
-                case STUDY_UPDATED: watchingStudyNotifications.add(notification); break;
+                case GATHERING_UPDATED: watchingGatheringNotifications.add(notification); break;
             }
         }
 
         model.addAttribute("numberOfNotChecked", numberOfNotChecked);
         model.addAttribute("numberOfChecked", numberOfChecked);
         model.addAttribute("notifications", notifications);
-        model.addAttribute("newStudyNotifications", newStudyNotifications);
+        model.addAttribute("newGatheringNotifications", newGatheringNotifications);
         model.addAttribute("eventEnrollmentNotifications", eventEnrollmentNotifications);
-        model.addAttribute("watchingStudyNotifications", watchingStudyNotifications);
+        model.addAttribute("watchingGatheringNotifications", watchingGatheringNotifications);
     }
 
 }

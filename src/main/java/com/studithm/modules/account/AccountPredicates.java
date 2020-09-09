@@ -1,7 +1,6 @@
 package com.studithm.modules.account;
 
 import com.querydsl.core.types.Predicate;
-import com.studithm.modules.study.QStudy;
 import com.studithm.modules.tag.Tag;
 import com.studithm.modules.zone.Zone;
 

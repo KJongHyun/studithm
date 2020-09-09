@@ -1,4 +1,4 @@
-package com.studithm.modules.study;
+package com.studithm.modules.Gathering;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.studithm.infra.AbstractContainerBaseTest;
@@ -6,15 +6,12 @@ import com.studithm.infra.MockMvcTest;
 import com.studithm.modules.account.WithAccount;
 import com.studithm.modules.account.Account;
 import com.studithm.modules.account.AccountRepository;
-import com.studithm.modules.study.form.StudyForm;
+import com.studithm.modules.Gathering.form.GatheringForm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -23,18 +20,21 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcTest
-class StudyControllerTest extends AbstractContainerBaseTest {
+class GatheringControllerTest extends AbstractContainerBaseTest {
 
     @Autowired MockMvc mockMvc;
     @Autowired ObjectMapper objectMapper;
-    @Autowired StudyRepository studyRepository;
+    @Autowired
+    GatheringRepository gatheringRepository;
     @Autowired AccountRepository accountRepository;
-    @Autowired StudyService studyService;
-    @Autowired StudyFactory studyFactory;
+    @Autowired
+    GatheringService gatheringService;
+    @Autowired
+    GatheringFactory gatheringFactory;
 
     @AfterEach
     void afterEach() {
-        studyRepository.deleteAll();
+        gatheringRepository.deleteAll();
     }
 
     @WithAccount("jonghyeon1")
@@ -52,26 +52,26 @@ class StudyControllerTest extends AbstractContainerBaseTest {
     @DisplayName("스터디 개설 완료")
     @Test
     void createStudy_success() throws Exception {
-        StudyForm studyForm = new StudyForm();
-        studyForm.setPath("teststudy");
-        studyForm.setTitle("testTitle");
-        studyForm.setShortDescription("testShortDescription");
-        studyForm.setFullDescription("testFullDescription");
+        GatheringForm gatheringForm = new GatheringForm();
+        gatheringForm.setPath("teststudy");
+        gatheringForm.setTitle("testTitle");
+        gatheringForm.setShortDescription("testShortDescription");
+        gatheringForm.setFullDescription("testFullDescription");
 
         mockMvc.perform(post("/new-study")
-                .param("path",  studyForm.getPath())
-                .param("title", studyForm.getTitle())
-                .param("shortDescription", studyForm.getShortDescription())
-                .param("fullDescription", studyForm.getFullDescription())
+                .param("path",  gatheringForm.getPath())
+                .param("title", gatheringForm.getTitle())
+                .param("shortDescription", gatheringForm.getShortDescription())
+                .param("fullDescription", gatheringForm.getFullDescription())
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/study/" + studyForm.getPath()));
+                .andExpect(redirectedUrl("/study/" + gatheringForm.getPath()));
 
-        Study study =  studyRepository.findByPath(studyForm.getPath());
+        Gathering gathering =  gatheringRepository.findByPath(gatheringForm.getPath());
 
-        assertNotNull(study);
+        assertNotNull(gathering);
         Account account = accountRepository.findByNickname("jonghyeon1");
-        assertTrue(study.getManagers().contains(account));
+        assertTrue(gathering.getManagers().contains(account));
     }
 
     @WithAccount("jonghyeon1")
@@ -90,8 +90,8 @@ class StudyControllerTest extends AbstractContainerBaseTest {
                 .andExpect(model().attributeExists("studyForm"))
                 .andExpect(view().name("study/form"));
 
-        Study study = studyRepository.findByPath("wrong path test");
-        assertNull(study);
+        Gathering gathering = gatheringRepository.findByPath("wrong path test");
+        assertNull(gathering);
     }
 
     @WithAccount("jonghyeon1")
@@ -100,7 +100,7 @@ class StudyControllerTest extends AbstractContainerBaseTest {
         String path = "test-path";
 
         Account account = accountRepository.findByNickname("jonghyeon1");
-        studyFactory.creatStudy(path, account);
+        gatheringFactory.creatGathering(path, account);
 
         mockMvc.perform(get("/study/" + path))
                 .andExpect(view().name("study/view"))

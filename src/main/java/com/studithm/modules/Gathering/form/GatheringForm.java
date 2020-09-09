@@ -1,4 +1,4 @@
-package com.studithm.modules.study.form;
+package com.studithm.modules.Gathering.form;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Data
-public class StudyForm {
+public class GatheringForm {
 
     public static final String VALID_PATH_PATTERN = "^[ㄱ-ㅎ가-힣a-z0-9]{2,20}$";
 

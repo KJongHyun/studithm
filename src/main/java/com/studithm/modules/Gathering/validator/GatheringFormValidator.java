@@ -1,7 +1,7 @@
-package com.studithm.modules.study.validator;
+package com.studithm.modules.Gathering.validator;
 
-import com.studithm.modules.study.StudyRepository;
-import com.studithm.modules.study.form.StudyForm;
+import com.studithm.modules.Gathering.GatheringRepository;
+import com.studithm.modules.Gathering.form.GatheringForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -9,19 +9,19 @@ import org.springframework.validation.Validator;
 
 @Component
 @RequiredArgsConstructor
-public class StudyFormValidator implements Validator {
+public class GatheringFormValidator implements Validator {
 
-    private final StudyRepository studyRepository;
+    private final GatheringRepository gatheringRepository;
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return StudyForm.class.isAssignableFrom(clazz);
+        return GatheringForm.class.isAssignableFrom(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        StudyForm studyForm = (StudyForm) target;
-        if (studyRepository.existsByPath(studyForm.getPath())) {
+        GatheringForm gatheringForm = (GatheringForm) target;
+        if (gatheringRepository.existsByPath(gatheringForm.getPath())) {
             errors.rejectValue("path", "wrong.path", "해당 스터디 경로값을 사용할 수 없습니다.");
         }
     }

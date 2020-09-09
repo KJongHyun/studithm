@@ -1,6 +1,6 @@
 package com.studithm.modules.event;
 
-import com.studithm.modules.study.Study;
+import com.studithm.modules.Gathering.Gathering;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,5 +11,5 @@ import java.util.List;
 public interface EventRepository extends JpaRepository<Event, Long> {
 
     @EntityGraph(value = "Event.withEnrollments", type = EntityGraph.EntityGraphType.LOAD)
-    List<Event> findByStudyOrderByStartDateTime(Study study);
+    List<Event> findByGatheringOrderByStartDateTime(Gathering gathering);
 }

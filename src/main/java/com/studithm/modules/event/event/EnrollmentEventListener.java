@@ -9,7 +9,7 @@ import com.studithm.modules.event.Event;
 import com.studithm.modules.notification.Notification;
 import com.studithm.modules.notification.NotificationRepository;
 import com.studithm.modules.notification.NotificationType;
-import com.studithm.modules.study.Study;
+import com.studithm.modules.Gathering.Gathering;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -38,22 +38,22 @@ public class EnrollmentEventListener {
         Enrollment enrollment = enrollmentEvent.getEnrollment();
         Account account = enrollment.getAccount();
         Event event = enrollment.getEvent();
-        Study study = event.getStudy();
+        Gathering gathering = event.getGathering();
 
-        if (account.isStudyEnrollmentResultByEmail()) {
-            sendEmail(enrollmentEvent, account, event, study);
+        if (account.isGatheringEnrollmentResultByEmail()) {
+            sendEmail(enrollmentEvent, account, event, gathering);
         }
 
-        if (account.isStudyEnrollmentResultByWeb()) {
-            createNotification(enrollmentEvent, account, event, study);
+        if (account.isGatheringEnrollmentResultByWeb()) {
+            createNotification(enrollmentEvent, account, event, gathering);
         }
 
     }
 
-    private void createNotification(EnrollmentEvent enrollmentEvent, Account account, Event event, Study study) {
+    private void createNotification(EnrollmentEvent enrollmentEvent, Account account, Event event, Gathering gathering) {
         Notification notification = new Notification();
-        notification.setTitle(study.getTitle());
-        notification.setLink("/study/" + study.getEncodedPath() + "/events" + event.getId());
+        notification.setTitle(gathering.getTitle());
+        notification.setLink("/gathering/" + gathering.getEncodedPath() + "/events" + event.getId());
         notification.setChecked(false);
         notification.setCreatedDateTime(LocalDateTime.now());
         notification.setMessage(enrollmentEvent.getMessage());
@@ -62,17 +62,17 @@ public class EnrollmentEventListener {
         notificationRepository.save(notification);
     }
 
-    private void sendEmail(EnrollmentEvent enrollmentEvent, Account account, Event event, Study study) {
+    private void sendEmail(EnrollmentEvent enrollmentEvent, Account account, Event event, Gathering gathering) {
         Context context = new Context();
         context.setVariable("nickname", account.getNickname());
-        context.setVariable("link", "/study/" + study.getEncodedPath() + "/events" + event.getId());
-        context.setVariable("linkName", study.getTitle());
+        context.setVariable("link", "/gathering/" + gathering.getEncodedPath() + "/events" + event.getId());
+        context.setVariable("linkName", gathering.getTitle());
         context.setVariable("message", enrollmentEvent.getMessage());
         context.setVariable("host", appProperties.getHost());
         String message = templateEngine.process("mail/simple-link", context);
 
         EmailMessage emailMessage = EmailMessage.builder()
-                .subject("스터디즘, " + event.getTitle() + " 모임 참가 신청 결과 입니다.")
+                .subject("라이트닝, " + event.getTitle() + " 모임 참가 신청 결과 입니다.")
                 .to(account.getEmail())
                 .message(message)
                 .build();

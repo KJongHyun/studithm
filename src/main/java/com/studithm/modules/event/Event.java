@@ -2,7 +2,7 @@ package com.studithm.modules.event;
 
 import com.studithm.modules.account.Account;
 import com.studithm.modules.account.UserAccount;
-import com.studithm.modules.study.Study;
+import com.studithm.modules.Gathering.Gathering;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +25,7 @@ public class Event {
     private Long id;
 
     @ManyToOne
-    private Study study;
+    private Gathering gathering;
 
     @ManyToOne
     private Account createdBy;

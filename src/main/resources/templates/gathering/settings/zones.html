@@ -3,13 +3,13 @@
 <head th:replace="fragments.html::head"></head>
 <body>
     <div th:replace="fragments.html::main-nav"></div>
-    <div th:replace="fragments.html::study-banner"></div>
+    <div th:replace="fragments.html::gathering-banner"></div>
     <div class="container">
-        <div th:replace="fragments.html::study-info"></div>
-        <div th:replace="fragments.html::study-menu(studyMenu='settings')"></div>
+        <div th:replace="fragments.html::gathering-info"></div>
+        <div th:replace="fragments.html::gathering-menu(studyMenu='settings')"></div>
         <div class="row mt-5 justify-content-center">
             <div class="col-2">
-                <div th:replace="fragments.html::study-settings-menu(currentMenu='zones')"></div>
+                <div th:replace="fragments.html::gathering-settings-menu(currentMenu='zones')"></div>
             </div>
             <div class="col-8">
                 <div class="row">
@@ -32,6 +32,6 @@
         <div th:replace="fragments.html::footer"></div>
     </div>
     <script th:replace="fragments.html :: ajax-csrf-header"></script>
-    <script th:replace="fragments.html :: update-zones(baseUrl = '/study/' + ${study.getPath()} + '/settings/zones')"></script>
+    <script th:replace="fragments.html :: update-zones(baseUrl = '/gathering/' + ${gathering.getPath()} + '/settings/zones')"></script>
 </body>
 </html>

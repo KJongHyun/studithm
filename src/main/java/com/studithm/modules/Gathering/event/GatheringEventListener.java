@@ -1,4 +1,4 @@
-package com.studithm.modules.study.event;
+package com.studithm.modules.Gathering.event;
 
 import com.studithm.infra.config.AppProperties;
 import com.studithm.infra.mail.EmailMessage;
@@ -9,8 +9,8 @@ import com.studithm.modules.account.AccountRepository;
 import com.studithm.modules.notification.Notification;
 import com.studithm.modules.notification.NotificationRepository;
 import com.studithm.modules.notification.NotificationType;
-import com.studithm.modules.study.Study;
-import com.studithm.modules.study.StudyRepository;
+import com.studithm.modules.Gathering.Gathering;
+import com.studithm.modules.Gathering.GatheringRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -29,9 +29,9 @@ import java.util.Set;
 @Transactional
 @Component
 @RequiredArgsConstructor
-public class StudyEventListener {
+public class GatheringEventListener {
 
-    private final StudyRepository studyRepository;
+    private final GatheringRepository gatheringRepository;
     private final AccountRepository accountRepository;
     private final EmailService emailService;
     private final TemplateEngine templateEngine;
@@ -39,45 +39,45 @@ public class StudyEventListener {
     private final NotificationRepository notificationRepository;
 
     @EventListener
-    public void handleStudyCreatedEvent(StudyCreatedEvent studyCreatedEvent) {
-        Study study = studyRepository.findStudyWithTagsAndZonesById(studyCreatedEvent.getStudy().getId());
-        Iterable<Account> accounts = accountRepository.findAll(AccountPredicates.findByTagsAndZones(study.getTags(), study.getZones()));
+    public void handleGatheringCreatedEvent(GatheringCreatedEvent gatheringCreatedEvent) {
+        Gathering gathering = gatheringRepository.findGatheringWithTagsAndZonesById(gatheringCreatedEvent.getGathering().getId());
+        Iterable<Account> accounts = accountRepository.findAll(AccountPredicates.findByTagsAndZones(gathering.getTags(), gathering.getZones()));
         accounts.forEach(account -> {
-            if (account.isStudyCreatedByEmail()) {
-                sendStudyCreatedEmail(study, account, "새로운 스터디가 생겼습니다.",
-                        "스터디즘, '" + study.getTitle() + "' 스터디가 생겼습니다.");
+            if (account.isGatheringCreatedByEmail()) {
+                sendGatheringCreatedEmail(gathering, account, "새로운 스터디가 생겼습니다.",
+                        "라이트닝, '" + gathering.getTitle() + "' 스터디가 생겼습니다.");
             }
 
-            if (account.isStudyCreatedByWeb()) {
-                createNotification(study, account, study.getShortDescription(), NotificationType.STUDY_CREATED);
+            if (account.isGatheringCreatedByWeb()) {
+                createNotification(gathering, account, gathering.getShortDescription(), NotificationType.GATHERING_CREATED);
             }
         });
     }
 
     @EventListener
-    public void handleStudyUpdateEvent(StudyUpdateEvent studyUpdateEvent) {
-        Study study = studyRepository.findStudyWithManagersAndMembersById(studyUpdateEvent.getStudy().getId());
+    public void handleGatheringUpdateEvent(GatheringUpdateEvent gatheringUpdateEvent) {
+        Gathering gathering = gatheringRepository.findGatheringWithManagersAndMembersById(gatheringUpdateEvent.getGathering().getId());
         Set<Account> accounts = new HashSet<>();
-        accounts.addAll(study.getManagers());
-        accounts.addAll(study.getMembers());
+        accounts.addAll(gathering.getManagers());
+        accounts.addAll(gathering.getMembers());
 
         accounts.forEach(account -> {
-            if (account.isStudyUpdatedByEmail()) {
-                sendStudyCreatedEmail(study, account, studyUpdateEvent.getMessage(),
-                        "스터디즘, '" + study.getTitle() + "' 스터디에 새소식이 있습니다.");
+            if (account.isGatheringUpdatedByEmail()) {
+                sendGatheringCreatedEmail(gathering, account, gatheringUpdateEvent.getMessage(),
+                        "라이트닝, '" + gathering.getTitle() + "' 스터디에 새소식이 있습니다.");
             }
 
-            if (account.isStudyUpdatedByWeb()) {
-                createNotification(study, account, studyUpdateEvent.getMessage(), NotificationType.STUDY_UPDATED);
+            if (account.isGatheringUpdatedByWeb()) {
+                createNotification(gathering, account, gatheringUpdateEvent.getMessage(), NotificationType.GATHERING_UPDATED);
             }
 
         });
     }
 
-    private void createNotification(Study study, Account account, String message, NotificationType notificationType) {
+    private void createNotification(Gathering gathering, Account account, String message, NotificationType notificationType) {
         Notification notification = new Notification();
-        notification.setTitle(study.getTitle());
-        notification.setLink("/study/" + study.getEncodedPath());
+        notification.setTitle(gathering.getTitle());
+        notification.setLink("/gathering/" + gathering.getEncodedPath());
         notification.setChecked(false);
         notification.setCreatedDateTime(LocalDateTime.now());
         notification.setMessage(message);
@@ -86,11 +86,11 @@ public class StudyEventListener {
         notificationRepository.save(notification);
     }
 
-    private void sendStudyCreatedEmail(Study study, Account account, String contextMessage, String emailSubject) {
+    private void sendGatheringCreatedEmail(Gathering gathering, Account account, String contextMessage, String emailSubject) {
         Context context = new Context();
         context.setVariable("nickname", account.getNickname());
-        context.setVariable("link", "/study/" + study.getEncodedPath());
-        context.setVariable("linkName", study.getTitle());
+        context.setVariable("link", "/gathering/" + gathering.getEncodedPath());
+        context.setVariable("linkName", gathering.getTitle());
         context.setVariable("message", contextMessage);
         context.setVariable("host", appProperties.getHost());
         String message = templateEngine.process("mail/simple-link", context);

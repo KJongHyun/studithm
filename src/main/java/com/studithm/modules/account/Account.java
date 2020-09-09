@@ -1,6 +1,5 @@
 package com.studithm.modules.account;
 
-import com.studithm.modules.study.Study;
 import com.studithm.modules.tag.Tag;
 import com.studithm.modules.zone.Zone;
 import lombok.*;
@@ -44,17 +43,17 @@ public class Account {
     @Lob @Basic(fetch = FetchType.EAGER)
     private String profileImage;
 
-    private boolean studyCreatedByEmail;
+    private boolean gatheringCreatedByEmail;
 
-    private boolean studyCreatedByWeb = true;
+    private boolean gatheringCreatedByWeb = true;
 
-    private boolean studyEnrollmentResultByEmail;
+    private boolean gatheringEnrollmentResultByEmail;
 
-    private boolean studyEnrollmentResultByWeb = true;
+    private boolean gatheringEnrollmentResultByWeb = true;
 
-    private boolean studyUpdatedByEmail;
+    private boolean gatheringUpdatedByEmail;
 
-    private boolean studyUpdatedByWeb = true;
+    private boolean gatheringUpdatedByWeb = true;
 
     @ManyToMany
     private Set<Tag> tags = new HashSet<>();

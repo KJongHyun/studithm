@@ -1,4 +1,4 @@
-package com.studithm.modules.study;
+package com.studithm.modules.Gathering;
 
 import com.studithm.modules.account.Account;
 import com.studithm.modules.account.UserAccount;
@@ -13,39 +13,39 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@NamedEntityGraph(name = "Study.withAll", attributeNodes = {
+@NamedEntityGraph(name = "Gathering.withAll", attributeNodes = {
         @NamedAttributeNode("tags"),
         @NamedAttributeNode("zones"),
         @NamedAttributeNode("managers"),
         @NamedAttributeNode("members"),
 })
 
-@NamedEntityGraph(name = "Study.withTagsAndManagers", attributeNodes = {
+@NamedEntityGraph(name = "Gathering.withTagsAndManagers", attributeNodes = {
         @NamedAttributeNode("tags"),
         @NamedAttributeNode("managers")
 })
-@NamedEntityGraph(name = "Study.withZonesAndManagers", attributeNodes = {
+@NamedEntityGraph(name = "Gathering.withZonesAndManagers", attributeNodes = {
         @NamedAttributeNode("zones"),
         @NamedAttributeNode("managers")
 })
-@NamedEntityGraph(name = "Study.withManagers", attributeNodes = {
+@NamedEntityGraph(name = "Gathering.withManagers", attributeNodes = {
         @NamedAttributeNode("managers")
 })
-@NamedEntityGraph(name = "Study.withMembers", attributeNodes = {
+@NamedEntityGraph(name = "Gathering.withMembers", attributeNodes = {
         @NamedAttributeNode("members")
 })
-@NamedEntityGraph(name = "Study.withTagsAndZones", attributeNodes = {
+@NamedEntityGraph(name = "Gathering.withTagsAndZones", attributeNodes = {
         @NamedAttributeNode("tags"),
         @NamedAttributeNode("zones")
 })
-@NamedEntityGraph(name = "Study.withManagersAndMembers", attributeNodes = {
+@NamedEntityGraph(name = "Gathering.withManagersAndMembers", attributeNodes = {
         @NamedAttributeNode("managers"),
         @NamedAttributeNode("members")
 })
 @Entity
 @Getter @Setter @EqualsAndHashCode(of = "of")
 @Builder @AllArgsConstructor @NoArgsConstructor
-public class Study {
+public class Gathering {
 
     @Id @GeneratedValue
     private Long id;
