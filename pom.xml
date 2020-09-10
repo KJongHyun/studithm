@@ -12,7 +12,7 @@
     <artifactId>studithm</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>studithm</name>
-    <description>Study management web service</description>
+    <description>Gathering management web service</description>
 
     <properties>
         <java.version>11</java.version>

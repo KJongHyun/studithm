@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body>
+    <div th:replace="fragments :: main-nav"></div>
+    <div th:replace="fragments :: gathering-banner"></div>
+    <div class="container">
+        <div th:replace="fragments :: gathering-info"></div>
+        <div th:replace="fragments :: gathering-menu(gatheringMenu='members')"></div>
+        <div th:replace="fragments :: member-list(members=${gathering.managers},isManager=${true})"></div>
+        <div th:replace="fragments :: member-list(members=${gathering.members},isManager=${false})"></div>
+        <div th:replace="fragments :: footer"></div>
+    </div>
+    <script type="application/javascript">
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+</body>
+</html>

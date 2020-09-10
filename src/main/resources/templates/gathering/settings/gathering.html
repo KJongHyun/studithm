@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body>
+<nav th:replace="fragments.html :: main-nav"></nav>
+<div th:replace="fragments.html :: gathering-banner"></div>
+<div class="container">
+    <div th:replace="fragments.html :: gathering-info"></div>
+    <div th:replace="fragments.html :: gathering-menu(gatheringMenu='settings')"></div>
+    <div class="row mt-3 justify-content-center">
+        <div class="col-2">
+            <div th:replace="fragments.html :: gathering-settings-menu(currentMenu='gathering')"></div>
+        </div>
+        <div class="col-8">
+            <div th:replace="fragments.html :: message"></div>
+            <div class="row">
+                <h5 class="col-sm-12">모임 공개 및 종료</h5>
+                <form th:if="${!gathering.published && !gathering.closed}" class="col-sm-12" action="#" th:action="@{'/gathering/' + ${gathering.getPath()} + '/settings/gathering/publish'}" method="post" novalidate>
+                    <div class="alert alert-info" role="alert">
+                        모임을 다른 사용자에게 공개할 준비가 되었다면 버튼을 클릭하세요.<br/>
+                        소개, 배너 이미지, 모임 주제 및 활동 지역을 등록했는지 확인하세요.<br/>
+                        모임을 공개하면 주요 활동 지역과 모임 주제에 관심있는 다른 사용자에게 알림을 전송합니다.
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-outline-primary" type="submit" aria-describedby="submitHelp">모임 공개</button>
+                    </div>
+                </form>
+                <form th:if="${gathering.published && !gathering.closed}" class="col-sm-12" action="#" th:action="@{'/gathering/' + ${gathering.getPath()} + '/settings/gathering/close'}" method="post" novalidate>
+                    <div class="alert alert-warning" role="alert">
+                        모임 활동을 마쳤다면 모임을 종료하세요.<br/>
+                        모임을 종료하면 더이상 팀원을 모집하거나 번개를 만들 수 없으며, 모임 경로와 이름을 수정할 수 없습니다.<br/>
+                        모임 번개과 참여한 팀원의 기록은 그대로 보관합니다.
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-outline-warning" type="submit" aria-describedby="submitHelp">모임 종료</button>
+                    </div>
+                </form>
+                <div th:if="${gathering.closed}" class="col-sm-12 alert alert-info">
+                    이 모임는 <span class="date-time" th:text="${gathering.closedDateTime}"></span>에 종료됐습니다.<br/>
+                    다시 모임을 진행하고 싶다면 새로운 모임을 만드세요.<br/>
+                </div>
+            </div>
+
+            <hr th:if="${!gathering.closed && !gathering.recruiting && gathering.published}"/>
+            <div class="row" th:if="${!gathering.closed && !gathering.recruiting && gathering.published}">
+                <h5 class="col-sm-12">팀원 모집</h5>
+                <form class="col-sm-12" action="#" th:action="@{'/gathering/' + ${gathering.getPath()} + '/settings/recruit/start'}" method="post" novalidate>
+                    <div class="alert alert-info" role="alert">
+                        팀원을 모집합니다.<br/>
+                        충분한 모임 팀원을 모집했다면 모집을 멈출 수 있습니다.<br/>
+                        팀원 모집 정보는 1시간에 한번만 바꿀 수 있습니다.
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-outline-primary" type="submit" aria-describedby="submitHelp">팀원 모집 시작</button>
+                    </div>
+                </form>
+            </div>
+
+            <hr th:if="${!gathering.closed && gathering.recruiting && gathering.published}"/>
+            <div class="row" th:if="${!gathering.closed && gathering.recruiting && gathering.published}">
+                <h5 class="col-sm-12">팀원 모집</h5>
+                <form class="col-sm-12" action="#" th:action="@{'/gathering/' + ${gathering.getPath()} + '/settings/recruit/stop'}" method="post" novalidate>
+                    <div class="alert alert-primary" role="alert">
+                        팀원 모집을 중답합니다.<br/>
+                        팀원 충원이 필요할 때 다시 팀원 모집을 시작할 수 있습니다.<br/>
+                        팀원 모집 정보는 1시간에 한번만 바꿀 수 있습니다.
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-outline-primary" type="submit" aria-describedby="submitHelp">팀원 모집 중단</button>
+                    </div>
+                </form>
+            </div>
+
+            <hr th:if="${!gathering.closed}"/>
+            <div class="row" th:if="${!gathering.closed}">
+                <h5 class="col-sm-12">모임 경로</h5>
+                <form class="col-sm-12 needs-validation" th:action="@{'/gathering/' + ${gathering.path} + '/settings/gathering/path'}"
+                      method="post" novalidate>
+                    <div class="alert alert-warning" role="alert">
+                        모임 경로를 수정하면 이전에 사용하던 경로로 모임에 접근할 수 없으니 주의하세요. <br/>
+                    </div>
+                    <div class="form-group">
+                        <input id="path" type="text" name="newPath" th:value="${gathering.path}" class="form-control"
+                               placeholder="예) gathering-path" aria-describedby="pathHelp" required>
+                        <small id="pathHelp" class="form-text text-muted">
+                            공백없이 문자, 숫자, 대시(-)와 언더바(_)만 3자 이상 20자 이내로 입력하세요. 모임 홈 주소에 사용합니다. 예) /gathering/<b>gathering-path</b>
+                        </small>
+                        <small class="invalid-feedback">모임 경로를 입력하세요.</small>
+                        <small class="form-text text-danger" th:if="${gatheringPathError}" th:text="${gatheringPathError}">Path Error</small>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-outline-warning" type="submit" aria-describedby="submitHelp">경로 수정</button>
+                    </div>
+                </form>
+            </div>
+
+            <hr th:if="${!gathering.closed}"/>
+            <div class="row" th:if="${!gathering.closed}">
+                <h5 class="col-sm-12">모임 이름</h5>
+                <form class="col-12 needs-validation" th:action="@{'/gathering/' + ${gathering.path} + '/settings/gathering/title'}"
+                      method="post" novalidate>
+                    <div class="alert alert-warning" role="alert">
+                        모임 이름을 수정합니다.<br/>
+                    </div>
+                    <div class="form-group">
+                        <label for="title">모임 이름</label>
+                        <input id="title" type="text" name="newTitle" th:value="${gathering.title}" class="form-control"
+                               placeholder="모임 이름" aria-describedby="titleHelp" required maxlength="50">
+                        <small id="titleHelp" class="form-text text-muted">
+                            모임 이름을 50자 이내로 입력하세요.
+                        </small>
+                        <small class="invalid-feedback">모임 이름을 입력하세요.</small>
+                        <small class="form-text text-danger" th:if="${gatheringTitleError}" th:text="${gatheringTitleError}">Title Error</small>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-outline-warning" type="submit" aria-describedby="submitHelp">모임 이름 수정</button>
+                    </div>
+                </form>
+            </div>
+            <hr/>
+            <div class="row" th:if="${gathering.isRemovable()}">
+                <h5 class="col-sm-12 text-danger">모임 삭제</h5>
+                <form class="col-sm-12" action="#" th:action="@{'/gathering/' + ${gathering.getPath()} + '/settings/gathering/remove'}" method="post" novalidate>
+                    <div class="alert alert-danger" role="alert">
+                        모임을 삭제하면 모임 관련 모든 기록을 삭제하며 복구할 수 없습니다. <br/>
+                        <b>다음에 해당하는 모임는 자동으로 삭제 됩니다.</b>
+                        <ul>
+                            <li>만든지 1주일이 지난 비공개 모임</li>
+                            <li>모임 공개 이후, 한달 동안 번개를 만들지 않은 모임</li>
+                            <li>모임 공개 이후, 번개를 만들지 않고 종료한 모임</li>
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-outline-danger" type="submit" aria-describedby="submitHelp">모임 삭제</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="row" th:if="${!gathering.isRemovable()}">
+                <h5 class="col-sm-12 text-danger">모임 삭제</h5>
+                <form class="col-sm-12" action="#" th:action="@{'/gathering/' + ${gathering.getPath()} + '/settings/gathering/remove'}" method="post" novalidate>
+                    <div class="alert alert-danger" role="alert">
+                        공개 중이고 번개를 했던 모임는 삭제할 수 없습니다.
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-outline-danger" type="submit" aria-describedby="submitHelp" disabled>모임 삭제</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments.html :: footer"></div>
+</div>
+<script th:replace="fragments.html :: tooltip"></script>
+<script th:replace="fragments.html :: form-validation"></script>
+</body>
+</html>

@@ -22,42 +22,42 @@
                 <form class="col-12" action="#" th:action="@{/settings/notifications}" th:object="${notifications}" method="post" novalidate>
                     <div class="alert alert-light" role="alert">
                         <strong><a href="#" th:href="@{/settings/locations}">주요 활동 지역</a>에
-                            <a href="#" th:href="@{/settings/keywords}">관심있는 주제</a>의 스터디가 만들어졌을 때</strong> 알림을 받을 방법을 설정하세요.
+                            <a href="#" th:href="@{/settings/keywords}">관심있는 주제</a>의 모임이 만들어졌을 때</strong> 알림을 받을 방법을 설정하세요.
                     </div>
                     <div class="form-group">
                         <div class="custom-control custom-switch custom-control-inline">
-                            <input type="checkbox" th:field="*{studyCreatedByEmail}" class="custom-control-input" id="studyCreatedByEmail">
-                            <label class="custom-control-label" for="studyCreatedByEmail">이메일로 받기</label>
+                            <input type="checkbox" th:field="*{gatheringCreatedByEmail}" class="custom-control-input" id="gatheringCreatedByEmail">
+                            <label class="custom-control-label" for="gatheringCreatedByEmail">이메일로 받기</label>
                         </div>
                         <div class="custom-control custom-switch custom-control-inline">
-                            <input type="checkbox" th:field="*{studyCreatedByWeb}" class="custom-control-input" id="studyCreatedByWeb">
-                            <label class="custom-control-label" for="studyCreatedByWeb">웹으로 받기</label>
+                            <input type="checkbox" th:field="*{gatheringCreatedByWeb}" class="custom-control-input" id="gatheringCreatedByWeb">
+                            <label class="custom-control-label" for="gatheringCreatedByWeb">웹으로 받기</label>
                         </div>
                     </div>
                     <div class="alert alert-light" role="alert">
-                        <strong>스터디 모임 참가 신청</strong> 결과 알림을 받을 방법을 설정하세요.
+                        <strong>모임 번개 참가 신청</strong> 결과 알림을 받을 방법을 설정하세요.
                     </div>
                     <div class="form-group">
                         <div class="custom-control custom-switch custom-control-inline">
-                            <input type="checkbox" th:field="*{studyEnrollmentResultByEmail}" class="custom-control-input" id="studyEnrollmentResultByEmil">
-                            <label class="custom-control-label" for="studyEnrollmentResultByEmil">이메일로 받기</label>
+                            <input type="checkbox" th:field="*{gatheringEnrollmentResultByEmail}" class="custom-control-input" id="gatheringEnrollmentResultByEmil">
+                            <label class="custom-control-label" for="gatheringEnrollmentResultByEmil">이메일로 받기</label>
                         </div>
                         <div class="custom-control custom-switch custom-control-inline">
-                            <input type="checkbox" th:field="*{studyEnrollmentResultByWeb}" class="custom-control-input" id="studyEnrollmentResultByWeb">
-                            <label class="custom-control-label" for="studyEnrollmentResultByWeb">웹으로 받기</label>
+                            <input type="checkbox" th:field="*{gatheringEnrollmentResultByWeb}" class="custom-control-input" id="gatheringEnrollmentResultByWeb">
+                            <label class="custom-control-label" for="gatheringEnrollmentResultByWeb">웹으로 받기</label>
                         </div>
                     </div>
                     <div class="alert alert-light" role="alert">
-                        <strong>참여중인 스터디</strong>에 대한 알림을 받을 방법을 설정하세요.
+                        <strong>참여중인 모임</strong>에 대한 알림을 받을 방법을 설정하세요.
                     </div>
                     <div class="form-group">
                         <div class="custom-control custom-switch custom-control-inline">
-                            <input type="checkbox" th:field="*{studyUpdatedByEmail}" class="custom-control-input" id="studyWatchByEmail">
-                            <label class="custom-control-label" for="studyWatchByEmail">이메일로 받기</label>
+                            <input type="checkbox" th:field="*{gatheringUpdatedByEmail}" class="custom-control-input" id="gatheringWatchByEmail">
+                            <label class="custom-control-label" for="gatheringWatchByEmail">이메일로 받기</label>
                         </div>
                         <div class="custom-control custom-switch custom-control-inline">
-                            <input type="checkbox" th:field="*{studyUpdatedByWeb}" class="custom-control-input" id="studyWatchByWeb">
-                            <label class="custom-control-label" for="studyWatchByWeb">웹으로 받기</label>
+                            <input type="checkbox" th:field="*{gatheringUpdatedByWeb}" class="custom-control-input" id="gatheringWatchByWeb">
+                            <label class="custom-control-label" for="gatheringWatchByWeb">웹으로 받기</label>
                         </div>
                     </div>
                     <div class="form-group">
