@@ -25,10 +25,10 @@
                     새 모임 알림
                     <span th:text="${newGatheringNotifications.size()}">3</span>
                 </a>
-                <a href="#" th:if="${eventEnrollmentNotifications.size() > 0}"
+                <a href="#" th:if="${lightningEnrollmentNotifications.size() > 0}"
                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                     번개 참가 신청 알림
-                    <span th:text="${eventEnrollmentNotifications.size()}">0</span>
+                    <span th:text="${lightningEnrollmentNotifications.size()}">0</span>
                 </a>
                 <a href="#" th:if="${watchingGatheringNotifications.size() > 0}"
                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
@@ -60,11 +60,11 @@
                 <div th:replace="fragments.html :: notification-list (notifications=${newGatheringNotifications})"></div>
             </div>
 
-            <div class="card mt-4" th:if="${eventEnrollmentNotifications.size() > 0}">
+            <div class="card mt-4" th:if="${lightningEnrollmentNotifications.size() > 0}">
                 <div class="card-header">
                     번개 참가 신청 관련 소식이 있습니다.
                 </div>
-                <div th:replace="fragments.html :: notification-list (notifications=${eventEnrollmentNotifications})"></div>
+                <div th:replace="fragments.html :: notification-list (notifications=${lightningEnrollmentNotifications})"></div>
             </div>
 
             <div class="card mt-4" th:if="${watchingGatheringNotifications.size() > 0}">

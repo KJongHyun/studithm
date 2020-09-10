@@ -1,4 +1,4 @@
-package com.lightning.modules.event;
+package com.lightning.modules.lightning;
 
 import com.lightning.modules.gathering.Gathering;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional(readOnly = true)
-public interface EventRepository extends JpaRepository<Event, Long> {
+public interface LightningRepository extends JpaRepository<Lightning, Long> {
 
-    @EntityGraph(value = "Event.withEnrollments", type = EntityGraph.EntityGraphType.LOAD)
-    List<Event> findByGatheringOrderByStartDateTime(Gathering gathering);
+    @EntityGraph(value = "Lightning.withEnrollments", type = EntityGraph.EntityGraphType.LOAD)
+    List<Lightning> findByGatheringOrderByStartDateTime(Gathering gathering);
 }

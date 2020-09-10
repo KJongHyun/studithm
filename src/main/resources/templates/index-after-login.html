@@ -35,16 +35,16 @@
                     <div class="col mb-4" th:each="enrollment: ${enrollmentList}">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title" th:text="${enrollment.event.title}">title</h5>
-                                <h6 class="card-subtitle mb-2 text-muted" th:text="${enrollment.event.gathering.title}">Gathering title</h6>
+                                <h5 class="card-title" th:text="${enrollment.lightning.title}">title</h5>
+                                <h6 class="card-subtitle mb-2 text-muted" th:text="${enrollment.lightning.gathering.title}">Gathering title</h6>
                                 <p class="card-text">
                                     <span>
                                         <i class="fa fa-calendar"></i>
-                                        <span class="calendar" th:text="${enrollment.event.startDateTime}"></span>
+                                        <span class="calendar" th:text="${enrollment.lightning.startDateTime}"></span>
                                     </span>
                                 </p>
-                                <a href="#" th:href="@{'/gathering/' + ${enrollment.event.gathering.path} + '/events/' + ${enrollment.event.id}}" class="card-link">번개 조회</a>
-                                <a href="#" th:href="@{'/gathering/' + ${enrollment.event.gathering.path}}" class="card-link">모임 조회</a>
+                                <a href="#" th:href="@{'/gathering/' + ${enrollment.lightning.gathering.path} + '/lightnings/' + ${enrollment.lightning.id}}" class="card-link">번개 조회</a>
+                                <a href="#" th:href="@{'/gathering/' + ${enrollment.lightning.gathering.path}}" class="card-link">모임 조회</a>
                             </div>
                         </div>
                     </div>

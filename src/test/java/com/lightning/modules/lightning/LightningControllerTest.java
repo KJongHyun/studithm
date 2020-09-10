@@ -1,4 +1,4 @@
-package com.lightning.modules.event;
+package com.lightning.modules.lightning;
 
 import com.lightning.infra.AbstractContainerBaseTest;
 import com.lightning.infra.MockMvcTest;
@@ -22,17 +22,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @MockMvcTest
-class EventControllerTest extends AbstractContainerBaseTest {
+class LightningControllerTest extends AbstractContainerBaseTest {
 
     @Autowired MockMvc mockMvc;
     @Autowired AccountRepository accountRepository;
     @Autowired
     GatheringRepository gatheringRepository;
-    @Autowired EventRepository eventRepository;
+    @Autowired
+    LightningRepository lightningRepository;
     @Autowired EnrollmentRepository enrollmentRepository;
     @Autowired
     GatheringService gatheringService;
-    @Autowired EventService eventService;
+    @Autowired
+    LightningService lightningService;
     @Autowired EventFactory eventFactory;
     @Autowired
     GatheringFactory gatheringFactory;
@@ -44,15 +46,15 @@ class EventControllerTest extends AbstractContainerBaseTest {
     void newEnrollment_to_FCFS_event_accepted() throws Exception {
         Account jonghyeon = accountFactory.createAccount("jonghyeon3");
         Gathering gathering = gatheringFactory.creatGathering("test-gathering", jonghyeon);
-        Event event = eventFactory.createEvent(gathering, jonghyeon, "test-event", 2, EventType.FCFS);
+        Lightning lightning = eventFactory.createEvent(gathering, jonghyeon, "test-event", 2, LightningType.FCFS);
 
-        mockMvc.perform(post("/gathering/" + gathering.getPath() + "/events/" + event.getId() + "/enroll")
+        mockMvc.perform(post("/gathering/" + gathering.getPath() + "/events/" + lightning.getId() + "/enroll")
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/gathering/" + gathering.getPath() + "/events/" + event.getId()));
+                .andExpect(redirectedUrl("/gathering/" + gathering.getPath() + "/events/" + lightning.getId()));
 
         Account jonghyeon1 = accountRepository.findByNickname("jonghyeon1");
-        assertTrue(enrollmentRepository.existsByEventAndAccount(event, jonghyeon1));
+        assertTrue(enrollmentRepository.existsByLightningAndAccount(lightning, jonghyeon1));
     }
 
     @Test
@@ -64,23 +66,23 @@ class EventControllerTest extends AbstractContainerBaseTest {
         Account jonghyeon3 = accountFactory.createAccount("jonghyeon3");
         Account jonghyeon4 = accountFactory.createAccount("jonghyeon4");
         Gathering gathering = gatheringFactory.creatGathering("test-gathering", jonghyeon2);
-        Event event = eventFactory.createEvent(gathering, jonghyeon2, "test-event", 2, EventType.FCFS);
-        eventService.newEnrollment(event, jonghyeon1);
-        eventService.newEnrollment(event, jonghyeon3);
-        eventService.newEnrollment(event, jonghyeon4);
+        Lightning lightning = eventFactory.createEvent(gathering, jonghyeon2, "test-event", 2, LightningType.FCFS);
+        lightningService.newEnrollment(lightning, jonghyeon1);
+        lightningService.newEnrollment(lightning, jonghyeon3);
+        lightningService.newEnrollment(lightning, jonghyeon4);
 
-        assertTrue(enrollmentRepository.findByEventAndAccount(event, jonghyeon1).isAccepted());
-        assertTrue(enrollmentRepository.findByEventAndAccount(event, jonghyeon3).isAccepted());
-        assertFalse(enrollmentRepository.findByEventAndAccount(event, jonghyeon4).isAccepted());
+        assertTrue(enrollmentRepository.findByLightningAndAccount(lightning, jonghyeon1).isAccepted());
+        assertTrue(enrollmentRepository.findByLightningAndAccount(lightning, jonghyeon3).isAccepted());
+        assertFalse(enrollmentRepository.findByLightningAndAccount(lightning, jonghyeon4).isAccepted());
 
-        mockMvc.perform(post("/gathering/" + gathering.getPath() + "/events/" + event.getId() + "/disenroll")
+        mockMvc.perform(post("/gathering/" + gathering.getPath() + "/events/" + lightning.getId() + "/disenroll")
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/gathering/" + gathering.getPath() + "/events/" + event.getId()));
+                .andExpect(redirectedUrl("/gathering/" + gathering.getPath() + "/events/" + lightning.getId()));
 
-        assertTrue(enrollmentRepository.findByEventAndAccount(event, jonghyeon3).isAccepted());
-        assertTrue(enrollmentRepository.findByEventAndAccount(event, jonghyeon4).isAccepted());
-        assertNull(enrollmentRepository.findByEventAndAccount(event, jonghyeon1));
+        assertTrue(enrollmentRepository.findByLightningAndAccount(lightning, jonghyeon3).isAccepted());
+        assertTrue(enrollmentRepository.findByLightningAndAccount(lightning, jonghyeon4).isAccepted());
+        assertNull(enrollmentRepository.findByLightningAndAccount(lightning, jonghyeon1));
     }
 
     @Test
@@ -90,14 +92,14 @@ class EventControllerTest extends AbstractContainerBaseTest {
 
         Account jonghyeon2 = accountFactory.createAccount("jonghyeon2");
         Gathering gathering = gatheringFactory.creatGathering("test-gathering", jonghyeon2);
-        Event event = eventFactory.createEvent(gathering, jonghyeon2, "test-event", 2, EventType.CONFIRMATIVE);
-        mockMvc.perform(post("/gathering/" + gathering.getPath() + "/events/" + event.getId() + "/enroll")
+        Lightning lightning = eventFactory.createEvent(gathering, jonghyeon2, "test-event", 2, LightningType.CONFIRMATIVE);
+        mockMvc.perform(post("/gathering/" + gathering.getPath() + "/events/" + lightning.getId() + "/enroll")
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/gathering/" + gathering.getPath() + "/events/" + event.getId()));
+                .andExpect(redirectedUrl("/gathering/" + gathering.getPath() + "/events/" + lightning.getId()));
 
         Account jonghyeon1 = accountRepository.findByNickname("jonghyeon1");
-        assertFalse(enrollmentRepository.findByEventAndAccount(event, jonghyeon1).isAccepted());
+        assertFalse(enrollmentRepository.findByLightningAndAccount(lightning, jonghyeon1).isAccepted());
     }
 
 }

@@ -60,7 +60,7 @@ public class NotificationController {
         model.addAttribute("numberOfChecked", numberOfChecked);
         model.addAttribute("notifications", notifications);
         model.addAttribute("newGatheringNotifications", newGatheringNotifications);
-        model.addAttribute("eventEnrollmentNotifications", eventEnrollmentNotifications);
+        model.addAttribute("lightningEnrollmentNotifications", eventEnrollmentNotifications);
         model.addAttribute("watchingGatheringNotifications", watchingGatheringNotifications);
     }
 

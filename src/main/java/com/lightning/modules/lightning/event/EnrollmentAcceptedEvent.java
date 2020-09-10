@@ -1,6 +1,6 @@
-package com.lightning.modules.event.event;
+package com.lightning.modules.lightning.event;
 
-import com.lightning.modules.event.Enrollment;
+import com.lightning.modules.lightning.Enrollment;
 
 public class EnrollmentAcceptedEvent extends EnrollmentEvent {
 

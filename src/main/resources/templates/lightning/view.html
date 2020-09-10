@@ -13,19 +13,19 @@
                 <a href="#" class="text-decoration-none" th:href="@{'/gathering/' + ${gathering.path}}">
                     <span th:text="${gathering.title}">모임 이름</span>
                 </a> / </span>
-            <span class="h2" th:text="${event.title}"></span>
+            <span class="h2" th:text="${lightning.title}"></span>
         </div>
         <div class="col-4 text-right justify-content-end">
                 <span sec:authorize="isAuthenticated()">
-                    <button th:if="${event.isEnrollableFor(#authentication.principal)}"
+                    <button th:if="${lightning.isEnrollableFor(#authentication.principal)}"
                             class="btn btn-outline-primary" data-toggle="modal" data-target="#enroll">
                         <i class="fa fa-plus-circle"></i> 참가 신청
                     </button>
-                    <button th:if="${event.isDisenrollableFor(#authentication.principal)}"
+                    <button th:if="${lightning.isDisenrollableFor(#authentication.principal)}"
                             class="btn btn-outline-primary" data-toggle="modal" data-target="#disenroll">
                         <i class="fa fa-minus-circle"></i> 참가 신청 취소
                     </button>
-                    <span class="text-success" th:if="${event.isAttended(#authentication.principal)}" disabled>
+                    <span class="text-success" th:if="${lightning.isAttended(#authentication.principal)}" disabled>
                         <i class="fa fa-check-circle"></i> 참석 완료
                     </span>
                 </span>
@@ -34,7 +34,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="leaveTitle" th:text="${event.title}"></h5>
+                        <h5 class="modal-title" id="leaveTitle" th:text="${lightning.title}"></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -46,7 +46,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                        <form th:action="@{'/gathering/' + ${gathering.path} + '/events/' + ${event.id} + '/disenroll'}" method="post">
+                        <form th:action="@{'/gathering/' + ${gathering.path} + '/lightnings/' + ${lightning.id} + '/disenroll'}" method="post">
                             <button class="btn btn-primary" type="submit" aria-describedby="submitHelp">확인</button>
                         </form>
                     </div>
@@ -57,7 +57,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="enrollmentTitle" th:text="${event.title}"></h5>
+                        <h5 class="modal-title" id="enrollmentTitle" th:text="${lightning.title}"></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -69,7 +69,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                        <form th:action="@{'/gathering/' + ${gathering.path} + '/events/' + ${event.id} + '/enroll'}" method="post">
+                        <form th:action="@{'/gathering/' + ${gathering.path} + '/lightnings/' + ${lightning.id} + '/enroll'}" method="post">
                             <button class="btn btn-primary" type="submit" aria-describedby="submitHelp">확인</button>
                         </form>
                     </div>
@@ -80,11 +80,11 @@
     <div class="row px-3 justify-content-center">
         <div class="col-7 pt-3">
             <dt class="font-weight-light">상세 번개 설명</dt>
-            <dd th:utext="${event.description}"></dd>
+            <dd th:utext="${lightning.description}"></dd>
 
-            <dt class="font-weight-light">번개 참가 신청 (<span th:text="${event.enrollments.size()}"></span>)</dt>
+            <dt class="font-weight-light">번개 참가 신청 (<span th:text="${lightning.enrollments.size()}"></span>)</dt>
             <dd>
-                <table class="table table-borderless table-sm" th:if="${event.enrollments.size() > 0}">
+                <table class="table table-borderless table-sm" th:if="${lightning.enrollments.size() > 0}">
                     <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -100,7 +100,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="enroll: ${event.enrollments}">
+                    <tr th:each="enroll: ${lightning.enrollments}">
                         <th scope="row" th:text="${enrollStat.count}"></th>
                         <td>
                             <a th:href="@{'/profile/' + ${enroll.account.nickname}}"
@@ -120,24 +120,24 @@
                             <span th:if="${!enroll.accepted}">대기중</span>
                         </td>
                         <td th:if="${gathering.isManager(#authentication.principal)}">
-                            <form th:if="${event.canAccept(enroll)}" th:action="@{'/gathering/' + ${gathering.path} + '/events/' + ${event.id} + '/enrollments/' + ${enroll.id} + '/accept'}" method="post">
+                            <form th:if="${lightning.canAccept(enroll)}" th:action="@{'/gathering/' + ${gathering.path} + '/lightnings/' + ${lightning.id} + '/enrollments/' + ${enroll.id} + '/accept'}" method="post">
                                 <button class="btn btn-primary" type="submit">
                                     신청 수락
                                 </button>
                             </form>
-                            <form th:if="${event.canReject(enroll)}" th:action="@{'/gathering/' + ${gathering.path} + '/events/' + ${event.id} + '/enrollments/' + ${enroll.id} + '/reject'}" method="post">
+                            <form th:if="${lightning.canReject(enroll)}" th:action="@{'/gathering/' + ${gathering.path} + '/lightnings/' + ${lightning.id} + '/enrollments/' + ${enroll.id} + '/reject'}" method="post">
                                 <button class="btn btn-primary" type="submit">
                                     취소
                                 </button>
                             </form>
                         </td>
                         <td th:if="${gathering.isManager(#authentication.principal)}">
-                            <form th:if="${enroll.accepted && !enroll.attended}" th:action="@{'/gathering/' + ${gathering.path} + '/events/' + ${event.id} + '/enrollments/' + ${enroll.id} + '/checkin'}" method="post">
+                            <form th:if="${enroll.accepted && !enroll.attended}" th:action="@{'/gathering/' + ${gathering.path} + '/lightnings/' + ${lightning.id} + '/enrollments/' + ${enroll.id} + '/checkin'}" method="post">
                                 <button class="btn btn-primary" type="submit">
                                     체크인
                                 </button>
                             </form>
-                            <form th:if="${enroll.accepted && enroll.attended}" th:action="@{'/gathering/' + ${gathering.path} + '/events/' + ${event.id} + '/enrollments/' + ${enroll.id} + '/cancel-checkin'}" method="post">
+                            <form th:if="${enroll.accepted && enroll.attended}" th:action="@{'/gathering/' + ${gathering.path} + '/lightnings/' + ${lightning.id} + '/enrollments/' + ${enroll.id} + '/cancel-checkin'}" method="post">
                                 <button class="btn btn-primary" type="submit">
                                     체크인 취소
                                 </button>
@@ -151,45 +151,45 @@
         <dl class="col-3 pt-3 text-right">
             <dt class="font-weight-light">모집 방법</dt>
             <dd>
-                <span th:if="${event.eventType == T(com.lightning.modules.event.EventType).FCFS}">선착순</span>
-                <span th:if="${event.eventType == T(com.lightning.modules.event.EventType).CONFIRMATIVE}">관리자 확인</span>
+                <span th:if="${lightning.lightningType == T(com.lightning.modules.lightning.LightningType).FCFS}">선착순</span>
+                <span th:if="${lightning.lightningType == T(com.lightning.modules.lightning.LightningType).CONFIRMATIVE}">관리자 확인</span>
             </dd>
 
             <dt class="font-weight-light">모집 인원</dt>
             <dd>
-                <span th:text="${event.limitOfEnrollments}"></span>명
+                <span th:text="${lightning.limitOfEnrollments}"></span>명
             </dd>
 
             <dt class="font-weight-light">참가 신청 마감 일시</dt>
             <dd>
-                <span class="date" th:text="${event.endEnrollmentDateTime}"></span>
-                <span class="weekday" th:text="${event.endEnrollmentDateTime}"></span><br/>
-                <span class="time" th:text="${event.endEnrollmentDateTime}"></span>
+                <span class="date" th:text="${lightning.endEnrollmentDateTime}"></span>
+                <span class="weekday" th:text="${lightning.endEnrollmentDateTime}"></span><br/>
+                <span class="time" th:text="${lightning.endEnrollmentDateTime}"></span>
             </dd>
 
             <dt class="font-weight-light">번개 일시</dt>
             <dd>
-                <span class="date" th:text="${event.startDateTime}"></span>
-                <span class="weekday" th:text="${event.startDateTime}"></span><br/>
-                <span class="time" th:text="${event.startDateTime}"></span> -
-                <span class="time" th:text="${event.endDateTime}"></span>
+                <span class="date" th:text="${lightning.startDateTime}"></span>
+                <span class="weekday" th:text="${lightning.startDateTime}"></span><br/>
+                <span class="time" th:text="${lightning.startDateTime}"></span> -
+                <span class="time" th:text="${lightning.endDateTime}"></span>
             </dd>
 
             <dt class="font-weight-light">번개장</dt>
             <dd>
-                <a th:href="@{'/profile/' + ${event.createdBy.nickname}}" class="text-decoration-none">
-                    <svg th:if="${#strings.isEmpty(event.createdBy?.profileImage)}"
-                         th:data-jdenticon-value="${event.createdBy.nickname}" width="24" height="24" class="rounded border bg-light"></svg>
-                    <img th:if="${!#strings.isEmpty(event.createdBy?.profileImage)}"
-                         th:src="${event.createdBy?.profileImage}" width="24" height="24" class="rounded border"/>
-                    <span th:text="${event.createdBy.nickname}"></span>
+                <a th:href="@{'/profile/' + ${lightning.createdBy.nickname}}" class="text-decoration-none">
+                    <svg th:if="${#strings.isEmpty(lightning.createdBy?.profileImage)}"
+                         th:data-jdenticon-value="${lightning.createdBy.nickname}" width="24" height="24" class="rounded border bg-light"></svg>
+                    <img th:if="${!#strings.isEmpty(lightning.createdBy?.profileImage)}"
+                         th:src="${lightning.createdBy?.profileImage}" width="24" height="24" class="rounded border"/>
+                    <span th:text="${lightning.createdBy.nickname}"></span>
                 </a>
             </dd>
 
             <dt th:if="${gathering.isManager(#authentication.principal)}" class="font-weight-light">번개 관리</dt>
             <dd th:if="${gathering.isManager(#authentication.principal)}">
                 <a class="btn btn-outline-primary btn-sm my-1"
-                   th:href="@{'/gathering/' + ${gathering.path} + '/events/' + ${event.id} + '/edit'}" >
+                   th:href="@{'/gathering/' + ${gathering.path} + '/lightnings/' + ${lightning.id} + '/edit'}" >
                     번개 수정
                 </a> <br/>
                 <button class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#cancel">
@@ -201,7 +201,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="cancelTitle" th:text="${event.title}"></h5>
+                        <h5 class="modal-title" id="cancelTitle" th:text="${lightning.title}"></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -213,7 +213,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                        <form th:action="@{'/gathering/' + ${gathering.path} + '/events/' + ${event.id}}" th:method="delete">
+                        <form th:action="@{'/gathering/' + ${gathering.path} + '/lightnings/' + ${lightning.id}}" th:method="delete">
                             <button class="btn btn-primary" type="submit" aria-describedby="submitHelp">확인</button>
                         </form>
                     </div>

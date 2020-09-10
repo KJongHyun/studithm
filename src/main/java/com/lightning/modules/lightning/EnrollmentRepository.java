@@ -1,4 +1,4 @@
-package com.lightning.modules.event;
+package com.lightning.modules.lightning;
 
 import com.lightning.modules.account.Account;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -9,10 +9,10 @@ import java.util.List;
 
 @Transactional(readOnly = true)
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
-    boolean existsByEventAndAccount(Event event, Account account);
+    boolean existsByLightningAndAccount(Lightning lightning, Account account);
 
-    Enrollment findByEventAndAccount(Event event, Account account);
+    Enrollment findByLightningAndAccount(Lightning lightning, Account account);
 
-    @EntityGraph("Enrollment.withEventAndGathering")
+    @EntityGraph("Enrollment.withLightningAndGathering")
     List<Enrollment> findByAccountAndAcceptedOrderByEnrolledAt(Account loginAccount, boolean accepted);
 }

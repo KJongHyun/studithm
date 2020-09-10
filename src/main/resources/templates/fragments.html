@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head">
     <meta charset="UTF-8">
-    <title>Studithm</title>
+    <title>롸이트닝</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css"/>
@@ -117,7 +117,7 @@
 <footer th:fragment="footer">
     <div class="row justify-content-center">
         <img src="/images/logo_long_kr.jpg" width="100" alt="" class="mb-2">
-        <small class="d-block mb-3 text-muted">Copyright 2020</small>
+        <small class="d-block mt-1 text-muted">Copyright 2020</small>
     </div>
 </footer>
 
@@ -137,10 +137,10 @@
             var forms = document.getElementsByClassName('needs-validation');
 
             Array.prototype.filter.call(forms, function (form) {
-                form.addEventListener('submit', function (event) {
+                form.addEventListener('submit', function (lightning) {
                     if (form.checkValidity() === false) {
-                        event.preventDefault();
-                        event.stopPropagation();
+                        lightning.preventDefault();
+                        lightning.stopPropagation();
                     }
                     form.classList.add('was-validated');
                 }, false)
@@ -174,17 +174,17 @@
                 <span th:if="${!gathering.published}"
                       class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="bottom"
                       title="모임 공개 준비중">
-                    <button class="btn btn-primary btn-sm" style="pointer-events: none;" type="button" disabled>DRAFT</button>
+                    <button class="btn btn-primary btn-sm" style="pointer-lightnings: none;" type="button" disabled>DRAFT</button>
                 </span>
             <span th:if="${gathering.closed}"
                   class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="bottom"
                   title="모임 종료함">
-                    <button class="btn btn-primary btn-sm" style="pointer-events: none;" type="button" disabled>CLOSED</button>
+                    <button class="btn btn-primary btn-sm" style="pointer-lightnings: none;" type="button" disabled>CLOSED</button>
                 </span>
             <span th:if="${!gathering.recruiting}"
                   class="d-inline-block ml-1" tabindex="0" data-toggle="tooltip" data-placement="bottom"
                   title="팀원 모집중 아님">
-                    <button class="btn btn-primary btn-sm" style="pointer-events: none;" type="button" disabled>OFF</button>
+                    <button class="btn btn-primary btn-sm" style="pointer-lightnings: none;" type="button" disabled>OFF</button>
                 </span>
             <span sec:authorize="isAuthenticated()" th:if="${gathering.isJoinable(#authentication.principal)}"
                   class="btn-group" role="group" aria-label="Basic example">
@@ -208,7 +208,7 @@
                 </span>
             <span sec:authorize="isAuthenticated()"
                   th:if="${gathering.published && !gathering.closed && gathering.isManager(#authentication.principal)}">
-                    <a class="btn btn-outline-primary" th:href="@{'/gathering/' + ${gathering.path} + '/new-event'}">
+                    <a class="btn btn-outline-primary" th:href="@{'/gathering/' + ${gathering.path} + '/new-lightning'}">
                         <i class="fa fa-plus"></i> 번개 만들기
                     </a>
                 </span>
@@ -246,7 +246,7 @@
         <a class="nav-item nav-link" th:classappend="${gatheringMenu == 'members'}? active" th:href="@{'/gathering/' + ${gathering.path} + '/members'}">
             <i class="fa fa-user"></i> 구성원
         </a>
-        <a class="nav-item nav-link" th:classappend="${gatheringMenu == 'events'}? active" th:href="@{'/gathering/' + ${gathering.path} + '/events'}">
+        <a class="nav-item nav-link" th:classappend="${gatheringMenu == 'lightnings'}? active" th:href="@{'/gathering/' + ${gathering.path} + '/lightnings'}">
             <i class="fa fa-calendar"></i> 번개
         </a>
         <a sec:authorize="isAuthenticated()" th:if="${gathering.isManager(#authentication.principal)}"
@@ -428,18 +428,18 @@
     </script>
 </div>
 
-<div th:fragment="event-form (mode, action)">
+<div th:fragment="lightning-form (mode, action)">
     <div class="py-5 text-center">
         <h2>
             <a th:href="@{'/gathering/' + ${gathering.path}}"><span th:text="${gathering.title}">모임</span></a> /
-            <span th:if="${mode == 'edit'}" th:text="${event.title}"></span>
+            <span th:if="${mode == 'edit'}" th:text="${lightning.title}"></span>
             <span th:if="${mode == 'new'}">새 번개 만들기</span>
         </h2>
     </div>
     <div class="row justify-content-center">
         <form class="needs-validation col-sm-10"
               th:action="@{${action}}"
-              th:object="${eventForm}" method="post" novalidate>
+              th:object="${lightningForm}" method="post" novalidate>
             <div class="form-group">
                 <label for="title">번개 이름</label>
                 <input id="title" type="text" th:field="*{title}" class="form-control"
@@ -451,12 +451,12 @@
                 <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Error</small>
             </div>
             <div class="form-group" th:if="${mode == 'new'}">
-                <label for="eventType">모집 방법</label>
-                <select th:field="*{eventType}" class="custom-select mr-sm-2" id="eventType" aria-describedby="eventTypeHelp">
+                <label for="lightningType">모집 방법</label>
+                <select th:field="*{lightningType}" class="custom-select mr-sm-2" id="lightningType" aria-describedby="lightningTypeHelp">
                     <option th:value="FCFS">선착순</option>
                     <option th:value="CONFIRMATIVE">관리자 확인</option>
                 </select>
-                <small id="eventTypeHelp" class="form-text text-muted">
+                <small id="lightningTypeHelp" class="form-text text-muted">
                     두가지 모집 방법이 있습니다.<br/>
                     <strong>선착순</strong>으로  모집하는 경우, 모집 인원 이내의 접수는 자동으로 확정되며, 제한 인원을 넘는 신청은 대기 신청이 되며 이후에 확정된 신청 중에 취소가 발생하면 선착순으로 대기 신청자를 확정 신청자로 변경합니다. 단, 등록 마감일 이후에는 취소해도 확정 여부가 바뀌지 않습니다.<br/>
                     <strong>확인</strong>으로 모집하는경우, 번개 및 모임 관리자가 번개 신청 목록을 조회하고 직접 확정 여부를 정할 수 있습니다. 등록 마감일 이후에는 변경할 수 없습니다.

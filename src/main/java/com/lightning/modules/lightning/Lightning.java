@@ -1,4 +1,4 @@
-package com.lightning.modules.event;
+package com.lightning.modules.lightning;
 
 import com.lightning.modules.account.Account;
 import com.lightning.modules.account.UserAccount;
@@ -14,12 +14,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @NamedEntityGraph(
-        name = "Event.withEnrollments",
+        name = "Lightning.withEnrollments",
         attributeNodes = @NamedAttributeNode("enrollments")
 )
 @Entity
 @Getter @Setter @EqualsAndHashCode(of = "id")
-public class Event {
+public class Lightning {
 
     @Id @GeneratedValue
     private Long id;
@@ -51,11 +51,11 @@ public class Event {
     @Column
     private int limitOfEnrollments;
 
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "lightning")
     private List<Enrollment> enrollments = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    private EventType eventType;
+    private LightningType lightningType;
 
     public boolean isEnrollableFor(UserAccount userAccount) {
         return isNotClosed() && !isAttended(userAccount) && !isAlreadyEnrolled(userAccount);
@@ -99,31 +99,31 @@ public class Event {
     }
 
     public boolean canAccept(Enrollment enrollment) {
-        return this.eventType == EventType.CONFIRMATIVE
+        return this.lightningType == LightningType.CONFIRMATIVE
                 && this.enrollments.contains(enrollment)
                 && !enrollment.isAttended()
                 && !enrollment.isAccepted() && this.limitOfEnrollments > this.getNumberOfAcceptedEnrollments();
     }
 
     public boolean canReject(Enrollment enrollment) {
-        return this.eventType == EventType.CONFIRMATIVE
+        return this.lightningType == LightningType.CONFIRMATIVE
                 && this.enrollments.contains(enrollment)
                 && !enrollment.isAttended()
                 && enrollment.isAccepted();
     }
 
     public boolean isAbleToAcceptWaitingEnrollment() {
-        return this.eventType == EventType.FCFS && this.getNumberOfAcceptedEnrollments() < this.limitOfEnrollments;
+        return this.lightningType == LightningType.FCFS && this.getNumberOfAcceptedEnrollments() < this.limitOfEnrollments;
     }
 
     public void addEnrollment(Enrollment enrollment) {
         this.enrollments.add(enrollment);
-        enrollment.setEvent(this);
+        enrollment.setLightning(this);
     }
 
     public void removeEnrollment(Enrollment enrollment) {
         enrollments.remove(enrollment);
-        enrollment.setEvent(null);
+        enrollment.setLightning(null);
     }
 
 

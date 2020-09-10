@@ -1,4 +1,4 @@
-package com.lightning.modules.event;
+package com.lightning.modules.lightning;
 
 import com.lightning.modules.account.Account;
 import lombok.EqualsAndHashCode;
@@ -8,9 +8,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 @NamedEntityGraph(
-        name = "Enrollment.withEventAndGathering",
+        name = "Enrollment.withLightningAndGathering",
         attributeNodes = {
-                @NamedAttributeNode(value = "event", subgraph = "gathering")
+                @NamedAttributeNode(value = "lightning", subgraph = "gathering")
         },
         subgraphs = @NamedSubgraph(name = "gathering", attributeNodes = @NamedAttributeNode("gathering"))
 )
@@ -22,7 +22,7 @@ public class Enrollment {
     private Long id;
 
     @ManyToOne
-    private Event event;
+    private Lightning lightning;
 
     @ManyToOne
     private Account account;

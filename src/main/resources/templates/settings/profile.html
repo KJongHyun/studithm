@@ -37,9 +37,9 @@
                     <div class="form-group">
                         <label for="url">링크</label>
                         <input type="url" id="url" th:field="*{url}" class="form-control"
-                        placeholder="http://studithm.com" aria-describedby="urlHelp" required>
+                        placeholder="http://lightning.com" aria-describedby="urlHelp" required>
                         <small id="urlHelp" class="form-text text-muted">
-                            블로그, 유튜브 또는 포트폴리오나 좋아하는 웹 사이트 등 본인을 표현할 수 있는 링크를 추가하세요.
+                            블로그, 유튜브 좋아하는 웹 사이트 등 본인을 표현할 수 있는 링크를 추가하세요.
                         </small>
                         <small class="form-text text-danger" th:if="${#fields.hasErrors('url')}" th:errors="*{url}">
                             올바른 URL이 아닙니다. 예시처럼 입력해 주세요.
@@ -51,7 +51,7 @@
                         <input id="company" type="text" th:field="*{occupation}" class="form-control"
                                placeholder="어떤 일을 하고 계신가요?" aria-describedby="occupationHelp" required>
                         <small id="companyHelp" class="form-text text-muted">
-                            개발자? 매니저? 취준생? 대표님?
+                            취준생? 현직자?
                         </small>
                     </div>
 
